@@ -6,7 +6,7 @@ namespace ClinicaOnline.Infrastructure.Data
 {
     public class Context : DbContext
     {
-        public Context(DbContextOptions options) : base(options)
+        public Context(DbContextOptions<Context> options) : base(options)
         {
         }
 
@@ -14,6 +14,7 @@ namespace ClinicaOnline.Infrastructure.Data
         public DbSet<Paciente> Pacientes { get; set; }
         public DbSet<Parceiro> Parceiros { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,6 +54,11 @@ namespace ClinicaOnline.Infrastructure.Data
 
             builder.HasIndex(paciente => paciente.Cpf);    
 
+            builder.HasOne(paciente => paciente.Medico)
+                .WithMany(medico => medico.Pacientes)
+                .IsRequired()
+                .HasForeignKey("Medico_Id");
+
             builder.Property(paciente => paciente.Nome)
                 .HasMaxLength(255);   
 
@@ -62,10 +68,6 @@ namespace ClinicaOnline.Infrastructure.Data
 
             builder.Property(paciente => paciente.Telefone)
                 .HasMaxLength(20);
-
-            builder.Property(paciente => paciente.Medico)
-                .HasColumnName("MedicoId")
-                .IsRequired();
         }
 
         private void ConfigureParceiro(EntityTypeBuilder<Parceiro> builder)

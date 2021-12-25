@@ -1,17 +1,27 @@
-version: '3.1'
+version: '3.9'
 
 services:
 
   db:
     image: postgres
     restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: Guilherme
       POSTGRES_PASSWORD: Bu1ltC0d32021
       POSTGRES_DB: BuiltCode
-
-  adminer:
-    image: adminer
-    restart: always
     ports:
-      - 8080:8080
+      - '5432:5432'
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+
+volumes:
+  db-data:
