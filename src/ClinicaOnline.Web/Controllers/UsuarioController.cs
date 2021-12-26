@@ -1,16 +1,14 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
-using ClinicaOnline.Application.Models.Response;
-using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Web.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicaOnline.Web.Controllers
 {
     [Route("v1/usuario")]
-    public class UsuarioController : Controller
+    public class UsuarioController : MainController
     {
         readonly IUsuarioService _usuarioService;
 
@@ -22,16 +20,16 @@ namespace ClinicaOnline.Web.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public async Task<UserAuthenticateResponse> Authenticate([FromBody]UserAuthenticateRequest user)
+        public async Task<IActionResult> Authenticate([FromBody]UserAuthenticateRequest user)
         {
-            return await _usuarioService.Authenticate(user);
+            return CustomResponse(await _usuarioService.Authenticate(user));
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<List<Usuario>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return await _usuarioService.GetAll();
+            return Ok(await _usuarioService.GetAll());
         }
     }
 }
