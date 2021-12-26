@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClinicaOnline.Core.Entities;
@@ -12,6 +13,12 @@ namespace ClinicaOnline.Infrastructure.Repositories
     {
         public UsuarioRepository(Context dbContext) : base(dbContext)
         {
+        }
+
+        public async Task<List<Usuario>> GetAll()
+        {
+            var result = await GetAllAsync();
+            return result.ToList();
         }
 
         public async Task<Usuario> GetUserByEmailAndPassword(Usuario user)

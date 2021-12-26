@@ -1,5 +1,4 @@
-using System;
-using System.Globalization;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
@@ -42,6 +41,11 @@ namespace ClinicaOnline.Application.Services
                     perfil = user.Eperfil.ToString()
                 }
             };
+        }
+
+        public async Task<List<Usuario>> GetAll()
+        {
+            return await _userRepository.GetAll();
         }
     }
 }

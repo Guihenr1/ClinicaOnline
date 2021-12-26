@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
 using ClinicaOnline.Application.Models.Response;
-using ClinicaOnline.Core.Enums;
+using ClinicaOnline.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,13 @@ namespace ClinicaOnline.Web.Controllers
         public async Task<UserAuthenticateResponse> Authenticate([FromBody]UserAuthenticateRequest user)
         {
             return await _usuarioService.Authenticate(user);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<List<Usuario>> GetAll()
+        {
+            return await _usuarioService.GetAll();
         }
     }
 }
