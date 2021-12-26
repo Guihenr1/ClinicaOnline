@@ -2,7 +2,7 @@ namespace ClinicaOnline.Core.Enums
 {
     public enum Perfil
     {
-        Admin = 1,
-        Atendente = 2
+        Admin = 0,
+        Atendente = 1
     }
 }
