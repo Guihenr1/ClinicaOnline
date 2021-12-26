@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using ClinicaOnline.Core.Configuration;
 using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Core.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClinicaOnline.Infrastructure.Data
@@ -27,7 +29,7 @@ namespace ClinicaOnline.Infrastructure.Data
                 Id = Guid.NewGuid(),
                 Email = "contato@builtcode.com.br",
                 Nome = "admin",
-                Senha = "123456",
+                Senha = Security.GenerateHash("123456", Settings.Salt),
                 Eperfil = 0
             };
         }

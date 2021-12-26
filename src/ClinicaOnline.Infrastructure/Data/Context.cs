@@ -1,3 +1,4 @@
+using System.Linq;
 using ClinicaOnline.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -40,7 +41,7 @@ namespace ClinicaOnline.Infrastructure.Data
 
             builder.Property(cb => cb.UfCrm)
                 .HasColumnName("Uf_crm")
-                .HasMaxLength(50)
+                .HasMaxLength(2)
                 .IsRequired();  
 
             builder.Property(cb => cb.Especialidade)

@@ -8,6 +8,7 @@ namespace ClinicaOnline.Core.Repositories
     public interface IUsuarioRepository : IRepository<Usuario>
     {
         Task<Usuario> GetUserByEmailAndPassword(Usuario user);
-        Task<List<Usuario>> GetAll();
+        Task<List<Usuario>> GetAllAsync();
+        Task<bool> CheckEmailExists(string email);
     }
 }

@@ -14,7 +14,7 @@ namespace ClinicaOnline.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Nome = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     Crm = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Uf_crm = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Uf_crm = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
                     Especialidade = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>

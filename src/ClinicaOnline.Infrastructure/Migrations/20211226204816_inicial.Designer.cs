@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicaOnline.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20211225222519_inicial")]
+    [Migration("20211226204816_inicial")]
     partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,8 +44,8 @@ namespace ClinicaOnline.Infrastructure.Migrations
 
                     b.Property<string>("UfCrm")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("Uf_crm");
 
                     b.HasKey("Id");

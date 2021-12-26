@@ -10,5 +10,6 @@ namespace ClinicaOnline.Application.Interfaces
     {
         Task<UserAuthenticateResponse> Authenticate(UserAuthenticateRequest user);
         Task<List<Usuario>> GetAll();
+        Task<UserResponse> Add(UserRequest user);
     }
 }

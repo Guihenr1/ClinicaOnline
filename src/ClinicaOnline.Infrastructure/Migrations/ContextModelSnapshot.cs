@@ -42,8 +42,8 @@ namespace ClinicaOnline.Infrastructure.Migrations
 
                     b.Property<string>("UfCrm")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("Uf_crm");
 
                     b.HasKey("Id");

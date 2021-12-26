@@ -15,9 +15,9 @@ namespace ClinicaOnline.Infrastructure.Repositories
         {
         }
 
-        public async Task<List<Usuario>> GetAll()
+        public async Task<List<Usuario>> GetAllAsync()
         {
-            var result = await GetAllAsync();
+            var result = await GetAll();
             return result.ToList();
         }
 
@@ -26,6 +26,17 @@ namespace ClinicaOnline.Infrastructure.Repositories
             return await _dbContext.Usuarios
                 .Where(x => x.Email == user.Email && x.Senha == user.Senha)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<Usuario> AddAsync(Usuario user)
+        {
+            return await Add(user);
+        }
+
+        public async Task<bool> CheckEmailExists(string email)
+        {
+            var user = await _dbContext.Usuarios.Where(x => x.Email.ToLower() == email.ToLower()).FirstOrDefaultAsync();
+            return user != null;
         }
     }
 }

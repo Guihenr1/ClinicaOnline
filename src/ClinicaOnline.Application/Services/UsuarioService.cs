@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
+using ClinicaOnline.Application.Mapper;
 using ClinicaOnline.Application.Models.Request;
 using ClinicaOnline.Application.Models.Response;
 using ClinicaOnline.Core.Configuration;
 using ClinicaOnline.Core.Entities;
 using ClinicaOnline.Core.Repositories;
+using ClinicaOnline.Core.Utils;
 
 namespace ClinicaOnline.Application.Services
 {
@@ -17,15 +20,33 @@ namespace ClinicaOnline.Application.Services
             _userRepository = userRepository;
         }
 
+        public async Task<UserResponse> Add(UserRequest user)
+        {
+            var response = new UserResponse();
+            var mapped = ObjectMapper.Mapper.Map<Usuario>(user);
+            mapped.Id = Guid.NewGuid();
+
+            if (await _userRepository.CheckEmailExists(user.Email)){
+                response.AddError("Email já está em uso");
+                return response;
+            }
+
+            mapped.Senha = Security.GenerateHash(user.Senha, Settings.Salt);
+            
+            var userAdd = await _userRepository.Add(mapped);
+            return ObjectMapper.Mapper.Map<UserResponse>(userAdd);
+        }
+
         public async Task<UserAuthenticateResponse> Authenticate(UserAuthenticateRequest model)
         {
             var response = new UserAuthenticateResponse();
+            model.password = Security.GenerateHash(model.password, Settings.Salt);
 
             var user = await _userRepository.GetUserByEmailAndPassword(
                 new Usuario { Senha = model.password, Email = model.email });
 
             if (user == null){
-                response.AddError("Usuário não encontrado");
+                response.AddError("Email ou senha incorretos");
                 return response;
             }
 
@@ -45,7 +66,7 @@ namespace ClinicaOnline.Application.Services
 
         public async Task<List<Usuario>> GetAll()
         {
-            return await _userRepository.GetAll();
+            return await _userRepository.GetAllAsync();
         }
     }
 }

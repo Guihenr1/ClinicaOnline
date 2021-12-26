@@ -22,6 +22,8 @@ namespace ClinicaOnline.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody]UserAuthenticateRequest user)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            
             return CustomResponse(await _usuarioService.Authenticate(user));
         }
 
@@ -30,6 +32,16 @@ namespace ClinicaOnline.Web.Controllers
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _usuarioService.GetAll());
+        }
+
+        [HttpPost]
+        [Route("add-user")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Add([FromBody]UserRequest user)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            return CustomResponse(await _usuarioService.Add(user));
         }
     }
 }
