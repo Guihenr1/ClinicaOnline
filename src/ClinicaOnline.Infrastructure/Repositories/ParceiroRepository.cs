@@ -17,8 +17,7 @@ namespace ClinicaOnline.Infrastructure.Repositories
         
         public async Task<IReadOnlyList<Parceiro>> GetAll() 
         {
-            var result = await GetAllAsync();
-            return result.ToList();
+            return await GetAllAsync();
         }
         
         public async Task<Parceiro> Add(Parceiro parceiro) 
