@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Models.Request;
@@ -10,5 +11,6 @@ namespace ClinicaOnline.Application.Interfaces
     {
         Task<IReadOnlyList<Medico>> GetAll();
         Task<MedicoResponse> Add(MedicoRequest medico);
+        Task<MedicoResponse> Update(Guid id, MedicoRequest model);
     }
 }

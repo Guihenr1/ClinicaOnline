@@ -35,5 +35,19 @@ namespace ClinicaOnline.Web.Controllers
 
             return CustomResponse(await _medicoService.Add(medico));
         }
+
+        [HttpPut]
+        [Route("update-medico/{id}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] MedicoRequest medico)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var result = await _medicoService.Update(id, medico);
+
+            if (!result.IsValid())
+                return CustomResponse(result);
+            else
+                return NoContent();
+        }
     }
 }

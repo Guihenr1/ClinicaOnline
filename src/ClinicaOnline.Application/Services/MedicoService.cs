@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
@@ -22,11 +23,37 @@ namespace ClinicaOnline.Application.Services
             return await _medicoRepository.GetAll();
         }
 
+        public async Task<MedicoResponse> Update(Guid id, MedicoRequest model)
+        {
+            var response = new MedicoResponse();
+
+            var checkMedicoExist = await _medicoRepository.GetById(id);
+            if (checkMedicoExist == null)
+            {
+                response.AddError("Médico não encontrado");
+                return response;
+            }
+
+            var checkCrmAndUfCrm = await _medicoRepository.GetByCrmAndUfCrm(model.Crm, model.UfCrm);
+            if (checkCrmAndUfCrm != null && checkCrmAndUfCrm.Id != id)
+            {
+                response.AddError("CRM e Uf CRM já cadastrados para outro médico");
+                return response;
+            }
+
+            var medico = ObjectMapper.Mapper.Map<Medico>(model);
+            medico.Id = id;
+            await _medicoRepository.Update(medico);
+
+            return response;
+        }
+
         public async Task<MedicoResponse> Add(MedicoRequest medico)
         {
             var response = new MedicoResponse();
 
-            if (await _medicoRepository.CheckCrmAndUfCrmExists(medico.Crm, medico.UfCrm))
+            var checkCrmAndUfCrm = await _medicoRepository.GetByCrmAndUfCrm(medico.Crm, medico.UfCrm);
+            if (checkCrmAndUfCrm != null)
             {
                 response.AddError("CRM e Uf CRM já cadastrados");
                 return response;

@@ -25,12 +25,21 @@ namespace ClinicaOnline.Infrastructure.Repositories
         {
             return await AddAsync(medico);
         }
-
-        public async Task<bool> CheckCrmAndUfCrmExists(string crm, string ufCrm)
+        
+        public async Task<Medico> GetById(Guid id) 
         {
-            var user = await _dbContext.Medicos.Where(x => x.Crm.ToLower() == crm.ToLower()
+            return await GetByIdAsync(id);
+        }
+        
+        public async Task Update(Medico medico) 
+        {
+            await UpdateAsync(medico);
+        }
+
+        public async Task<Medico> GetByCrmAndUfCrm(string crm, string ufCrm)
+        {
+            return await _dbContext.Medicos.Where(x => x.Crm.ToLower() == crm.ToLower()
                 && x.UfCrm.ToLower() == ufCrm.ToLower()).FirstOrDefaultAsync();
-            return user != null;
         }
     }
 }

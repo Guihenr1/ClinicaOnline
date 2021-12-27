@@ -36,7 +36,8 @@ namespace ClinicaOnline.Infrastructure.Repositories.Base
 
         public async Task UpdateAsync(T entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            var oldEntity = await GetByIdAsync(entity.Id);
+            _dbContext.Entry(oldEntity).CurrentValues.SetValues(entity);
             await _dbContext.SaveChangesAsync();
         }
 

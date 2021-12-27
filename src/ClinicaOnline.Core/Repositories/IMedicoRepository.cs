@@ -10,6 +10,8 @@ namespace ClinicaOnline.Core.Repositories
     {
         Task<IReadOnlyList<Medico>> GetAll();
         Task<Medico> Add(Medico medico);
-        Task<bool> CheckCrmAndUfCrmExists(string crm, string ufCrm);
+        Task<Medico> GetByCrmAndUfCrm(string crm, string ufCrm);
+        Task Update(Medico medico);
+        Task<Medico> GetById(Guid id);
     }
 }
