@@ -91,6 +91,8 @@ namespace ClinicaOnline.Web
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IParceiroRepository, ParceiroRepository>();
+            services.AddScoped<IParceiroService, ParceiroService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
