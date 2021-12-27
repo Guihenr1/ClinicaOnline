@@ -22,7 +22,7 @@ namespace ClinicaOnline.Infrastructure.Repositories.Base
             return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public virtual async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(Guid id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }

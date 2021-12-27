@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,9 +26,14 @@ namespace ClinicaOnline.Infrastructure.Repositories
             return await AddAsync(parceiro);
         }
         
-        public async void Update(Parceiro parceiro) 
+        public async Task Update(Parceiro parceiro) 
         {
             await UpdateAsync(parceiro);
+        }
+        
+        public async Task<Parceiro> GetById(Guid id) 
+        {
+            return await GetByIdAsync(id);
         }
     }
 }

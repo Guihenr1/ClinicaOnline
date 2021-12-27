@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
+using ClinicaOnline.Application.Mapper;
 using ClinicaOnline.Application.Models.Request;
+using ClinicaOnline.Application.Models.Response;
 using ClinicaOnline.Core.Entities;
 using ClinicaOnline.Core.Repositories;
 
@@ -30,6 +32,23 @@ namespace ClinicaOnline.Application.Services
         public async Task<IReadOnlyList<Parceiro>> GetAll()
         {
             return await _parceiroRepository.GetAll();
+        }
+
+        public async Task<ParceiroUpdateApiKeyResponse> UpdateApiKey(Guid id)
+        {
+            var response = new ParceiroUpdateApiKeyResponse();
+            var parceiro = await _parceiroRepository.GetById(id);
+
+            if (parceiro == null){
+                response.AddError("Parceiro não encontrado");
+                return response;
+            }
+
+            parceiro.ApiKey = Guid.NewGuid();
+            
+            await _parceiroRepository.Update(parceiro);
+
+            return ObjectMapper.Mapper.Map<ParceiroUpdateApiKeyResponse>(parceiro);
         }
     }
 }

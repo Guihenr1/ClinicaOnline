@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClinicaOnline.Core.Entities;
@@ -9,5 +10,7 @@ namespace ClinicaOnline.Core.Repositories
     {
         Task<Parceiro> Add(Parceiro parceiro);
         Task<IReadOnlyList<Parceiro>> GetAll();
+        Task Update(Parceiro parceiro);
+        Task<Parceiro> GetById(Guid id);
     }
 }

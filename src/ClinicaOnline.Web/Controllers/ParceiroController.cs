@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
@@ -32,6 +33,14 @@ namespace ClinicaOnline.Web.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             return Ok(await _parceiroService.Add(parceiro));
+        }
+
+        [HttpPatch]
+        [Route("update-apikey/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateApiKey([FromRoute]Guid id)
+        {
+            return CustomResponse(await _parceiroService.UpdateApiKey(id));
         }
     }
 }
