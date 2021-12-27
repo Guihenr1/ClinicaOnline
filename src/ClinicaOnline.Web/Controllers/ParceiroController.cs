@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClinicaOnline.Web.Controllers
 {
     [Route("v1/parceiro")]
+    [Authorize(Roles = "Admin")]
     public class ParceiroController : MainController
     {
         readonly IParceiroService _parceiroService;
@@ -19,7 +20,7 @@ namespace ClinicaOnline.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Route("get-all")]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _parceiroService.GetAll());
@@ -27,7 +28,6 @@ namespace ClinicaOnline.Web.Controllers
 
         [HttpPost]
         [Route("add-parceiro")]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add([FromBody]ParceiroRequest parceiro)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -37,7 +37,6 @@ namespace ClinicaOnline.Web.Controllers
 
         [HttpPatch]
         [Route("update-apikey/{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateApiKey([FromRoute]Guid id)
         {
             return CustomResponse(await _parceiroService.UpdateApiKey(id));

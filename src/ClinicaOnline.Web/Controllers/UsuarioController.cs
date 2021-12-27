@@ -28,6 +28,7 @@ namespace ClinicaOnline.Web.Controllers
         }
 
         [HttpGet]
+        [Route("get-all")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
@@ -35,7 +36,7 @@ namespace ClinicaOnline.Web.Controllers
         }
 
         [HttpPost]
-        [Route("add-user")]
+        [Route("add-usuario")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add([FromBody]UserRequest user)
         {

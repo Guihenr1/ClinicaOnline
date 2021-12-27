@@ -25,9 +25,11 @@ namespace ClinicaOnline.Application.Mapper
     {
         public ClinicaOnlineDtoMapper()
         {
-            CreateMap<UserRequest, Usuario>().ReverseMap();
-            CreateMap<Usuario, UserResponse>().ReverseMap();
+            CreateMap<UserRequest, Usuario>();
+            CreateMap<Usuario, UserResponse>();
             CreateMap<Parceiro, ParceiroUpdateApiKeyResponse>();
+            CreateMap<MedicoRequest, Medico>();
+            CreateMap<Medico, MedicoResponse>();
         }
     }
 }
