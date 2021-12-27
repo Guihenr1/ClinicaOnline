@@ -15,10 +15,9 @@ namespace ClinicaOnline.Infrastructure.Repositories
         {
         }
 
-        public async Task<List<Usuario>> GetAllAsync()
+        public async Task<IReadOnlyList<Usuario>> GetAll()
         {
-            var result = await GetAll();
-            return result.ToList();
+            return await GetAllAsync();
         }
 
         public async Task<Usuario> GetUserByEmailAndPassword(Usuario user)
@@ -28,9 +27,9 @@ namespace ClinicaOnline.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Usuario> AddAsync(Usuario user)
+        public async Task<Usuario> Add(Usuario user)
         {
-            return await Add(user);
+            return await AddAsync(user);
         }
 
         public async Task<bool> CheckEmailExists(string email)

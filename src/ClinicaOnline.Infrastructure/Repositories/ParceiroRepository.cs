@@ -14,15 +14,20 @@ namespace ClinicaOnline.Infrastructure.Repositories
         {
         }
         
-        public async Task<List<Parceiro>> GetAllAsync() 
+        public async Task<IReadOnlyList<Parceiro>> GetAll() 
         {
-            var result = await GetAll();
+            var result = await GetAllAsync();
             return result.ToList();
         }
         
-        public async Task<Parceiro> AddAsync(Parceiro parceiro) 
+        public async Task<Parceiro> Add(Parceiro parceiro) 
         {
-            return await Add(parceiro);
+            return await AddAsync(parceiro);
+        }
+        
+        public async void Update(Parceiro parceiro) 
+        {
+            await UpdateAsync(parceiro);
         }
     }
 }

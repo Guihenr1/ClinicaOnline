@@ -9,7 +9,7 @@ namespace ClinicaOnline.Application.Interfaces
     public interface IUsuarioService
     {
         Task<UserAuthenticateResponse> Authenticate(UserAuthenticateRequest user);
-        Task<List<Usuario>> GetAll();
+        Task<IReadOnlyList<Usuario>> GetAll();
         Task<UserResponse> Add(UserRequest user);
     }
 }

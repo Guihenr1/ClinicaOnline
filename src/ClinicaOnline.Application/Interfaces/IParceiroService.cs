@@ -7,7 +7,7 @@ namespace ClinicaOnline.Application.Interfaces
 {
     public interface IParceiroService
     {
-        Task<List<Parceiro>> GetAll();
+        Task<IReadOnlyList<Parceiro>> GetAll();
         Task<Parceiro> Add(ParceiroRequest model);
     }
 }

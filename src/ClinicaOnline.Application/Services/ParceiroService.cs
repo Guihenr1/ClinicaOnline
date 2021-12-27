@@ -24,12 +24,12 @@ namespace ClinicaOnline.Application.Services
                 ApiKey = Guid.NewGuid()
             };
 
-            return await _parceiroRepository.AddAsync(parceiro);
+            return await _parceiroRepository.Add(parceiro);
         }
 
-        public async Task<List<Parceiro>> GetAll()
+        public async Task<IReadOnlyList<Parceiro>> GetAll()
         {
-            return await _parceiroRepository.GetAllAsync();
+            return await _parceiroRepository.GetAll();
         }
     }
 }

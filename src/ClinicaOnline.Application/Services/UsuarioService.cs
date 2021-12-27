@@ -64,9 +64,9 @@ namespace ClinicaOnline.Application.Services
             };
         }
 
-        public async Task<List<Usuario>> GetAll()
+        public async Task<IReadOnlyList<Usuario>> GetAll()
         {
-            return await _userRepository.GetAllAsync();
+            return await _userRepository.GetAll();
         }
     }
 }
