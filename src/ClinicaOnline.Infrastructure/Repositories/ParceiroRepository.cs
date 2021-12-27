@@ -19,5 +19,10 @@ namespace ClinicaOnline.Infrastructure.Repositories
             var result = await GetAll();
             return result.ToList();
         }
+        
+        public async Task<Parceiro> AddAsync(Parceiro parceiro) 
+        {
+            return await Add(parceiro);
+        }
     }
 }

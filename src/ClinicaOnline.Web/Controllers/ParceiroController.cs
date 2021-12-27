@@ -23,5 +23,15 @@ namespace ClinicaOnline.Web.Controllers
         {
             return Ok(await _parceiroService.GetAll());
         }
+
+        [HttpPost]
+        [Route("add-parceiro")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Add([FromBody]ParceiroRequest parceiro)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            return Ok(await _parceiroService.Add(parceiro));
+        }
     }
 }

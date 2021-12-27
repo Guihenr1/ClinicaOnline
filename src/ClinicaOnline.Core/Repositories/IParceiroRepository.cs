@@ -8,5 +8,6 @@ namespace ClinicaOnline.Core.Repositories
     public interface IParceiroRepository : IRepository<Parceiro>
     {
         Task<List<Parceiro>> GetAllAsync();
+        Task<Parceiro> AddAsync(Parceiro parceiro);
     }
 }
