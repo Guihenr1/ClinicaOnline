@@ -60,5 +60,12 @@ namespace ClinicaOnline.Web.Controllers
             else
                 return NoContent();
         }
+
+        [HttpGet]
+        [Route("get-all-for-partners")]
+        public async Task<IActionResult> GetAllForPartners(string ufCrm)
+        {
+            return Ok(await _medicoService.GetAllForPartners(ufCrm));
+        }
     }
 }

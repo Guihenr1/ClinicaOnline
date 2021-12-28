@@ -94,5 +94,15 @@ namespace ClinicaOnline.Application.Services
         {
             return await _medicoRepository.GetById(id);
         }
+
+        public async Task<IReadOnlyList<Medico>> GetAllForPartners(string ufCrm)
+        {
+            var medicos = await _medicoRepository.GetAll();
+
+            if (!string.IsNullOrWhiteSpace(ufCrm))
+                medicos = medicos.Where(x => x.UfCrm.ToLower() == ufCrm.ToLower()).ToList();
+
+            return medicos;
+        }
     }
 }
