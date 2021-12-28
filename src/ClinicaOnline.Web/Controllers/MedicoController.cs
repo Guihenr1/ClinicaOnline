@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
-using ClinicaOnline.Core.Entities;
 using ClinicaOnline.Web.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +42,18 @@ namespace ClinicaOnline.Web.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var result = await _medicoService.Update(id, medico);
+
+            if (!result.IsValid())
+                return CustomResponse(result);
+            else
+                return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("delete-medico/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var result = await _medicoService.Delete(id);
 
             if (!result.IsValid())
                 return CustomResponse(result);

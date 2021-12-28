@@ -7,11 +7,8 @@ using ClinicaOnline.Core.Entities;
 
 namespace ClinicaOnline.Application.Interfaces
 {
-    public interface IMedicoService
+    public interface IPacienteService
     {
-        Task<IReadOnlyList<Medico>> GetAll();
-        Task<MedicoResponse> Add(MedicoRequest medico);
-        Task<MedicoResponse> Update(Guid id, MedicoRequest model);
-        Task<MedicoResponse> Delete(Guid medicoId);
+        Task<IReadOnlyList<Paciente>> GetPacientesByMedicoId(Guid medicoId);
     }
 }

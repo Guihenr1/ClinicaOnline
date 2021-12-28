@@ -35,6 +35,11 @@ namespace ClinicaOnline.Infrastructure.Repositories
         {
             await UpdateAsync(medico);
         }
+        
+        public async Task Delete(Medico medico) 
+        {
+            await DeleteAsync(medico);
+        }
 
         public async Task<Medico> GetByCrmAndUfCrm(string crm, string ufCrm)
         {

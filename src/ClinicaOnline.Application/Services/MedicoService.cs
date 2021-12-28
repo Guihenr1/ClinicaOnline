@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Mapper;
@@ -13,9 +14,11 @@ namespace ClinicaOnline.Application.Services
     public class MedicoService : IMedicoService
     {
         private IMedicoRepository _medicoRepository;
-        public MedicoService(IMedicoRepository medicoRepository)
+        private IPacienteService _pacienteService;
+        public MedicoService(IMedicoRepository medicoRepository, IPacienteService pacienteService)
         {
             _medicoRepository = medicoRepository;
+            _pacienteService = pacienteService;
         }
 
         public async Task<IReadOnlyList<Medico>> GetAll()
@@ -62,6 +65,29 @@ namespace ClinicaOnline.Application.Services
             var medicoAdd = await _medicoRepository.Add(ObjectMapper.Mapper.Map<Medico>(medico));
 
             return ObjectMapper.Mapper.Map<MedicoResponse>(medicoAdd);
+        }
+
+        public async Task<MedicoResponse> Delete(Guid medicoId)
+        {
+            var response = new MedicoResponse();
+
+            var pacientes = await _pacienteService.GetPacientesByMedicoId(medicoId);
+            if (pacientes.Any())
+            {
+                response.AddError("Não é possível excluir médicos com pacientes associados");
+                return response;
+            }
+
+            var medico = await _medicoRepository.GetById(medicoId);
+            if (medico == null)
+            {
+                response.AddError("Médico não encontrado");
+                return response;
+            }
+            
+            await _medicoRepository.Delete(medico);
+
+            return response;
         }
     }
 }

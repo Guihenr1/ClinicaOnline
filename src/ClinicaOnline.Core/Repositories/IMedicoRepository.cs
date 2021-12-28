@@ -13,5 +13,6 @@ namespace ClinicaOnline.Core.Repositories
         Task<Medico> GetByCrmAndUfCrm(string crm, string ufCrm);
         Task Update(Medico medico);
         Task<Medico> GetById(Guid id);
+        Task Delete(Medico medico);
     }
 }
