@@ -21,5 +21,10 @@ namespace ClinicaOnline.Infrastructure.Repositories
             return await _dbContext.Pacientes
                 .Where(x => x.Medico.Id == medicoId).ToListAsync();
         }
+
+        public async Task<IReadOnlyList<Paciente>> GetAll()
+        {
+            return await GetAllAsync();
+        }
     }
 }

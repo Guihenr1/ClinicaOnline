@@ -9,5 +9,6 @@ namespace ClinicaOnline.Core.Repositories
     public interface IPacienteRepository : IRepository<Paciente>
     {
         Task<IReadOnlyList<Paciente>> GetPacientesByMedicoId(Guid medicoId);
+        Task<IReadOnlyList<Paciente>> GetAll();
     }
 }
