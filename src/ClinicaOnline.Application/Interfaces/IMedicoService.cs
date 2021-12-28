@@ -13,5 +13,6 @@ namespace ClinicaOnline.Application.Interfaces
         Task<MedicoResponse> Add(MedicoRequest medico);
         Task<MedicoResponse> Update(Guid id, MedicoRequest model);
         Task<MedicoResponse> Delete(Guid medicoId);
+        Task<Medico> GetBydId(Guid id);
     }
 }

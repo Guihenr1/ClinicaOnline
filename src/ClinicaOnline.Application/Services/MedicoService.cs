@@ -14,8 +14,8 @@ namespace ClinicaOnline.Application.Services
     public class MedicoService : IMedicoService
     {
         private IMedicoRepository _medicoRepository;
-        private IPacienteService _pacienteService;
-        public MedicoService(IMedicoRepository medicoRepository, IPacienteService pacienteService)
+        private Lazy<IPacienteService> _pacienteService;
+        public MedicoService(IMedicoRepository medicoRepository, Lazy<IPacienteService> pacienteService)
         {
             _medicoRepository = medicoRepository;
             _pacienteService = pacienteService;
@@ -71,7 +71,7 @@ namespace ClinicaOnline.Application.Services
         {
             var response = new MedicoResponse();
 
-            var pacientes = await _pacienteService.GetPacientesByMedicoId(medicoId);
+            var pacientes = await _pacienteService.Value.GetPacientesByMedicoId(medicoId);
             if (pacientes.Any())
             {
                 response.AddError("Não é possível excluir médicos com pacientes associados");
@@ -88,6 +88,11 @@ namespace ClinicaOnline.Application.Services
             await _medicoRepository.Delete(medico);
 
             return response;
+        }
+
+        public async Task<Medico> GetBydId(Guid id)
+        {
+            return await _medicoRepository.GetById(id);
         }
     }
 }

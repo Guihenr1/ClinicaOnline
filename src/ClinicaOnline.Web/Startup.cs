@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using ClinicaOnline.Application.Interfaces;
@@ -33,7 +34,7 @@ namespace ClinicaOnline.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            
+
             services.AddDbContext<Context>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("PostgreSql")));
 
@@ -89,6 +90,7 @@ namespace ClinicaOnline.Web
 
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(Lazy<>), typeof(LazilyResolved<>));
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IParceiroRepository, ParceiroRepository>();
@@ -106,7 +108,7 @@ namespace ClinicaOnline.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => 
+                app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClinicaOnline.Web v1");
                     c.RoutePrefix = string.Empty;
@@ -124,6 +126,14 @@ namespace ClinicaOnline.Web
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private class LazilyResolved<T> : Lazy<T>
+        {
+            public LazilyResolved(IServiceProvider serviceProvider)
+                : base(serviceProvider.GetRequiredService<T>)
+            {
+            }
         }
     }
 }

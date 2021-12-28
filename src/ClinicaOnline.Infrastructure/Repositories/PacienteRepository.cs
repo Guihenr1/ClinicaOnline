@@ -26,5 +26,16 @@ namespace ClinicaOnline.Infrastructure.Repositories
         {
             return await GetAllAsync();
         }
+
+        public async Task<Paciente> Add(Paciente paciente)
+        {
+            return await AddAsync(paciente);
+        }
+
+        public async Task<Paciente> GetByCpf(string cpf)
+        {
+            return await _dbContext.Pacientes
+                .Where(x => x.Cpf == cpf).FirstOrDefaultAsync();
+        }
     }
 }

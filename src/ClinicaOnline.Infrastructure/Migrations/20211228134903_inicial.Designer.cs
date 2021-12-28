@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicaOnline.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20211226204816_inicial")]
+    [Migration("20211228134903_inicial")]
     partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

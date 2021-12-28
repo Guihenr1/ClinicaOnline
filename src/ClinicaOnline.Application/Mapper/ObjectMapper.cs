@@ -30,6 +30,8 @@ namespace ClinicaOnline.Application.Mapper
             CreateMap<Parceiro, ParceiroUpdateApiKeyResponse>();
             CreateMap<MedicoRequest, Medico>();
             CreateMap<Medico, MedicoResponse>();
+            CreateMap<PacienteRequest, Paciente>();
+            CreateMap<Paciente, PacienteResponse>();
         }
     }
 }
