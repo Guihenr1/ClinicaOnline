@@ -12,5 +12,6 @@ namespace ClinicaOnline.Core.Repositories
         Task<IReadOnlyList<Paciente>> GetAll();
         Task<Paciente> Add(Paciente paciente);
         Task<Paciente> GetByCpf(string cpf);
+        Task Update(Paciente paciente);
     }
 }

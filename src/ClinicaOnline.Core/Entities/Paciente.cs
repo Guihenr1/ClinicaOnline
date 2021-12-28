@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using ClinicaOnline.Core.Entities.Base;
 
 namespace ClinicaOnline.Core.Entities

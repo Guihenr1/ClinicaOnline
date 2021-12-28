@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Mapper;
@@ -57,6 +58,35 @@ namespace ClinicaOnline.Application.Services
             var pacienteAdd = await _pacienteRepository.Add(mapped);
 
             return ObjectMapper.Mapper.Map<PacienteResponse>(pacienteAdd);
+        }
+
+        public async Task<PacienteResponse> Update(Guid id, PacienteRequest model)
+        {
+            var response = new PacienteResponse();
+
+            var getByCpf = await _pacienteRepository.GetByCpf(model.Cpf);
+            if (getByCpf != null && getByCpf.Id != id){
+                response.AddError("Cpf já cadastrado");
+                return response;
+            }
+
+            if (!Cpf.ValidateCpf(model.Cpf)){
+                response.AddError("Cpf inválido");
+                return response;
+            }        
+
+            var mapped = ObjectMapper.Mapper.Map<Paciente>(model);
+            mapped.Id = id;
+
+            mapped.Medico = await _medicoService.GetBydId(model.MedicoId);
+            if (mapped.Medico == null) {
+                response.AddError("Médico não encontrado");
+                return response;
+            }
+
+            await _pacienteRepository.Update(mapped);
+
+            return response;
         }
     }
 }

@@ -37,5 +37,16 @@ namespace ClinicaOnline.Infrastructure.Repositories
             return await _dbContext.Pacientes
                 .Where(x => x.Cpf == cpf).FirstOrDefaultAsync();
         }
+        
+        public async Task Update(Paciente paciente) 
+        {
+            var oldEntity = await _dbContext.Pacientes.Include(x => x.Medico)
+                .FirstOrDefaultAsync(x => x.Id == paciente.Id);
+
+            _dbContext.Pacientes.Remove(oldEntity);
+            _dbContext.Pacientes.Add(paciente);
+
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
