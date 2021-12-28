@@ -48,5 +48,15 @@ namespace ClinicaOnline.Infrastructure.Repositories
 
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task Delete(Paciente paciente)
+        {
+            await DeleteAsync(paciente);
+        }
+
+        public async Task<Paciente> GetById(Guid id)
+        {
+            return await GetByIdAsync(id);
+        }
     }
 }

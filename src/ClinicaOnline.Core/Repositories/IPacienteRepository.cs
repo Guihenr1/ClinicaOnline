@@ -13,5 +13,7 @@ namespace ClinicaOnline.Core.Repositories
         Task<Paciente> Add(Paciente paciente);
         Task<Paciente> GetByCpf(string cpf);
         Task Update(Paciente paciente);
+        Task Delete(Paciente paciente);
+        Task<Paciente> GetById(Guid id);
     }
 }

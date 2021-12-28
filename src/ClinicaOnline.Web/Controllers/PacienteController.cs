@@ -49,5 +49,17 @@ namespace ClinicaOnline.Web.Controllers
             else
                 return NoContent();
         }
+
+        [HttpDelete]
+        [Route("delete-paciente/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var result = await _pacienteService.Delete(id);
+
+            if (!result.IsValid())
+                return CustomResponse(result);
+            else
+                return NoContent();
+        }
     }
 }

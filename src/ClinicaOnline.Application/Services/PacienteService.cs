@@ -88,5 +88,20 @@ namespace ClinicaOnline.Application.Services
 
             return response;
         }
+
+        public async Task<PacienteResponse> Delete(Guid id)
+        {
+            var response = new PacienteResponse();
+            var paciente = await _pacienteRepository.GetById(id);
+
+            if (paciente == null) {
+                response.AddError("Paciente não encontrado");
+                return response;
+            }
+
+            await _pacienteRepository.Delete(paciente);
+
+            return response;
+        }
     }
 }
