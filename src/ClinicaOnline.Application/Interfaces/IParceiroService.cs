@@ -12,5 +12,6 @@ namespace ClinicaOnline.Application.Interfaces
         Task<IReadOnlyList<Parceiro>> GetAll();
         Task<Parceiro> Add(ParceiroRequest model);
         Task<ParceiroUpdateApiKeyResponse> UpdateApiKey(Guid id);
+        Task<bool> CheckApiKey(Guid apiKey);
     }
 }

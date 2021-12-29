@@ -9,9 +9,12 @@ using ClinicaOnline.Core.Repositories.Base;
 using ClinicaOnline.Infrastructure.Data;
 using ClinicaOnline.Infrastructure.Repositories;
 using ClinicaOnline.Infrastructure.Repositories.Base;
+using ClinicaOnline.Web.Attributes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -99,6 +102,15 @@ namespace ClinicaOnline.Web
             services.AddScoped<IMedicoService, MedicoService>();
             services.AddScoped<IPacienteRepository, PacienteRepository>();
             services.AddScoped<IPacienteService, PacienteService>();
+
+            services.AddTransient<IAuthorizationHandler, ApiKeyRequirementHandler>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddAuthorization(authConfig =>
+            {
+                authConfig.AddPolicy("ApiKeyPolicy",
+                    policyBuilder => policyBuilder
+                        .AddRequirements(new ApiKeyRequirement()));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

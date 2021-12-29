@@ -6,6 +6,7 @@ using ClinicaOnline.Core.Entities;
 using ClinicaOnline.Core.Repositories;
 using ClinicaOnline.Infrastructure.Data;
 using ClinicaOnline.Infrastructure.Repositories.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClinicaOnline.Infrastructure.Repositories
 {
@@ -33,6 +34,13 @@ namespace ClinicaOnline.Infrastructure.Repositories
         public async Task<Parceiro> GetById(Guid id) 
         {
             return await GetByIdAsync(id);
+        }
+        
+        public async Task<bool> CheckApiKey(Guid apiKey) 
+        {
+            var result = await _dbContext.Parceiros.Where(x => x.ApiKey == apiKey).FirstOrDefaultAsync();
+
+            return result != null;
         }
     }
 }

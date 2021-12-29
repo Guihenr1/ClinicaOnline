@@ -12,5 +12,6 @@ namespace ClinicaOnline.Core.Repositories
         Task<IReadOnlyList<Parceiro>> GetAll();
         Task Update(Parceiro parceiro);
         Task<Parceiro> GetById(Guid id);
+        Task<bool> CheckApiKey(Guid apiKey);
     }
 }

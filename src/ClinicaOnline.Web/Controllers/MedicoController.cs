@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
@@ -9,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClinicaOnline.Web.Controllers
 {
     [Route("v1/medico")]
-    [Authorize(Roles = "Admin,Atendente")]
     public class MedicoController : MainController
     {
         readonly IMedicoService _medicoService;
@@ -21,6 +21,7 @@ namespace ClinicaOnline.Web.Controllers
 
         [HttpGet]
         [Route("get-all")]
+        [Authorize(Roles = "Admin,Atendente")]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _medicoService.GetAll());
@@ -28,6 +29,7 @@ namespace ClinicaOnline.Web.Controllers
 
         [HttpPost]
         [Route("add-medico")]
+        [Authorize(Roles = "Admin,Atendente")]
         public async Task<IActionResult> Add([FromBody] MedicoRequest medico)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -37,6 +39,7 @@ namespace ClinicaOnline.Web.Controllers
 
         [HttpPut]
         [Route("update-medico/{id}")]
+        [Authorize(Roles = "Admin,Atendente")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] MedicoRequest medico)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -51,6 +54,7 @@ namespace ClinicaOnline.Web.Controllers
 
         [HttpDelete]
         [Route("delete-medico/{id}")]
+        [Authorize(Roles = "Admin,Atendente")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var result = await _medicoService.Delete(id);
@@ -63,7 +67,8 @@ namespace ClinicaOnline.Web.Controllers
 
         [HttpGet]
         [Route("get-all-for-partners")]
-        public async Task<IActionResult> GetAllForPartners(string ufCrm)
+        [Authorize(Policy = "ApiKeyPolicy")]
+        public async Task<IActionResult> GetAllForPartners([FromHeader(Name = "x-api-key")][Required]string xApiKey, string ufCrm)
         {
             return Ok(await _medicoService.GetAllForPartners(ufCrm));
         }

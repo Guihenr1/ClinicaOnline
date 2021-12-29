@@ -50,5 +50,10 @@ namespace ClinicaOnline.Application.Services
 
             return ObjectMapper.Mapper.Map<ParceiroUpdateApiKeyResponse>(parceiro);
         }
+
+        public async Task<bool> CheckApiKey(Guid apiKey) 
+        {
+            return await _parceiroRepository.CheckApiKey(apiKey);
+        }
     }
 }
