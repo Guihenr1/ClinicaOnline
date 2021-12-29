@@ -17,6 +17,9 @@ namespace ClinicaOnline.Web.Controllers
             _usuarioService = usuarioService;
         }
 
+        /// <summary>
+        /// Realizar o login do usuário.
+        /// </summary>
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
@@ -27,6 +30,9 @@ namespace ClinicaOnline.Web.Controllers
             return CustomResponse(await _usuarioService.Authenticate(user));
         }
 
+        /// <summary>
+        /// Listar todos os usuários.
+        /// </summary>
         [HttpGet]
         [Route("get-all")]
         [Authorize(Roles = "Admin")]
@@ -35,6 +41,9 @@ namespace ClinicaOnline.Web.Controllers
             return Ok(await _usuarioService.GetAll());
         }
 
+        /// <summary>
+        /// Adicionar um novo usuário.
+        /// </summary>
         [HttpPost]
         [Route("add-usuario")]
         [Authorize(Roles = "Admin")]

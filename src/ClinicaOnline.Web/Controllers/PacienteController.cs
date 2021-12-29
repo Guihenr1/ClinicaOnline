@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
-using ClinicaOnline.Application.Models.Response;
 using ClinicaOnline.Web.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +19,9 @@ namespace ClinicaOnline.Web.Controllers
             _pacienteService = pacienteService;
         }
 
+        /// <summary>
+        /// Listar todos os pacientes.
+        /// </summary>
         [HttpGet]
         [Route("get-all")]
         public async Task<IActionResult> GetAll()
@@ -27,6 +29,9 @@ namespace ClinicaOnline.Web.Controllers
             return Ok(await _pacienteService.GetAll());
         }
 
+        /// <summary>
+        /// Adicionar um novo paciente.
+        /// </summary>
         [HttpPost]
         [Route("add-paciente")]
         public async Task<IActionResult> Add([FromBody]PacienteRequest paciente)
@@ -36,6 +41,10 @@ namespace ClinicaOnline.Web.Controllers
             return CustomResponse(await _pacienteService.Add(paciente));
         }
 
+        /// <summary>
+        /// Editar um paciente.
+        /// </summary>
+        /// <param name="id">Id do paciente que deseja atualizar.</param>
         [HttpPut]
         [Route("update-paciente/{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody]PacienteRequest paciente)
@@ -50,6 +59,10 @@ namespace ClinicaOnline.Web.Controllers
                 return NoContent();
         }
 
+        /// <summary>
+        /// Excluir um paciente.
+        /// </summary>
+        /// <param name="id">Id do paciente que deseja excluir.</param>
         [HttpDelete]
         [Route("delete-paciente/{id}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)

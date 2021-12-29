@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using AutoMapper;
 using ClinicaOnline.Application.Models.Request;
 using ClinicaOnline.Application.Models.Response;

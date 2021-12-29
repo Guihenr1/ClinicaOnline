@@ -24,7 +24,7 @@ namespace ClinicaOnline.Infrastructure.Repositories
 
         public async Task<IReadOnlyList<Paciente>> GetAll()
         {
-            return await GetAllAsync();
+            return await _dbContext.Pacientes.Include(x => x.Medico).ToListAsync();
         }
 
         public async Task<Paciente> Add(Paciente paciente)

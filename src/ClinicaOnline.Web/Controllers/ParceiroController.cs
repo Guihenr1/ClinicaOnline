@@ -19,6 +19,9 @@ namespace ClinicaOnline.Web.Controllers
             _parceiroService = parceiroService;
         }
 
+        /// <summary>
+        /// Listar todos os parceiros.
+        /// </summary>
         [HttpGet]
         [Route("get-all")]
         public async Task<IActionResult> GetAll()
@@ -26,6 +29,9 @@ namespace ClinicaOnline.Web.Controllers
             return Ok(await _parceiroService.GetAll());
         }
 
+        /// <summary>
+        /// Adicionar um novo parceiro.
+        /// </summary>
         [HttpPost]
         [Route("add-parceiro")]
         public async Task<IActionResult> Add([FromBody]ParceiroRequest parceiro)
@@ -35,6 +41,10 @@ namespace ClinicaOnline.Web.Controllers
             return Ok(await _parceiroService.Add(parceiro));
         }
 
+        /// <summary>
+        /// Atualizar a Api-Key de um parceiro.
+        /// </summary>
+        /// <param name="id">Id do parceiro que deseja atualizar a Api-Key.</param>
         [HttpPatch]
         [Route("update-apikey/{id}")]
         public async Task<IActionResult> UpdateApiKey([FromRoute]Guid id)
