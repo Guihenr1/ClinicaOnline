@@ -29,7 +29,10 @@ namespace ClinicaOnline.Infrastructure.Data
         {
             builder.HasKey(medico => medico.Id);              
 
-            builder.HasIndex(medico => new { medico.Crm, medico.UfCrm });         
+            builder.HasIndex(medico => new { medico.Crm, medico.UfCrm });   
+
+            builder.HasMany(medico => medico.Pacientes)
+                .WithOne(paciente => paciente.Medico);      
 
             builder.Property(medico => medico.Nome)
                 .HasMaxLength(255)
@@ -58,7 +61,11 @@ namespace ClinicaOnline.Infrastructure.Data
             builder.HasOne(paciente => paciente.Medico)
                 .WithMany(medico => medico.Pacientes)
                 .IsRequired()
-                .HasForeignKey("Medico_Id");
+                .HasForeignKey(paciente => paciente.MedicoId);
+
+            builder.Property(cb => cb.MedicoId)
+                .HasColumnName("Medico_Id")
+                .IsRequired(); 
 
             builder.Property(paciente => paciente.Nome)
                 .HasMaxLength(255);   

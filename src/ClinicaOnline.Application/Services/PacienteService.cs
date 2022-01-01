@@ -78,8 +78,8 @@ namespace ClinicaOnline.Application.Services
             var mapped = ObjectMapper.Mapper.Map<Paciente>(model);
             mapped.Id = id;
 
-            mapped.Medico = await _medicoService.GetBydId(model.MedicoId);
-            if (mapped.Medico == null) {
+            var medico = await _medicoService.GetBydId(model.MedicoId);
+            if (medico == null) {
                 response.AddError("Médico não encontrado");
                 return response;
             }

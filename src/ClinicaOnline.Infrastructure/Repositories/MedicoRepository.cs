@@ -43,8 +43,8 @@ namespace ClinicaOnline.Infrastructure.Repositories
 
         public async Task<Medico> GetByCrmAndUfCrm(string crm, string ufCrm)
         {
-            return await _dbContext.Medicos.Where(x => x.Crm.ToLower() == crm.ToLower()
-                && x.UfCrm.ToLower() == ufCrm.ToLower()).FirstOrDefaultAsync();
+            return await _dbContext.Medicos.FirstOrDefaultAsync(x => x.Crm.ToLower() == crm.ToLower()
+                && x.UfCrm.ToLower() == ufCrm.ToLower());
         }
     }
 }

@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicaOnline.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20211228134903_inicial")]
+    [Migration("20220101174138_inicial")]
     partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,8 +66,9 @@ namespace ClinicaOnline.Infrastructure.Migrations
                         .HasMaxLength(11)
                         .HasColumnType("character varying(11)");
 
-                    b.Property<Guid>("Medico_Id")
-                        .HasColumnType("uuid");
+                    b.Property<Guid>("MedicoId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("Medico_Id");
 
                     b.Property<string>("Nome")
                         .HasMaxLength(255)
@@ -81,7 +82,7 @@ namespace ClinicaOnline.Infrastructure.Migrations
 
                     b.HasIndex("Cpf");
 
-                    b.HasIndex("Medico_Id");
+                    b.HasIndex("MedicoId");
 
                     b.ToTable("Pacientes");
                 });
@@ -143,7 +144,7 @@ namespace ClinicaOnline.Infrastructure.Migrations
                 {
                     b.HasOne("ClinicaOnline.Core.Entities.Medico", "Medico")
                         .WithMany("Pacientes")
-                        .HasForeignKey("Medico_Id")
+                        .HasForeignKey("MedicoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
