@@ -22,4 +22,4 @@ docker-compose up -d
 dotnet run
 ```
 
-- Acessar `https://localhost:5001/index.html` e o Api deverá está rodando corretamente!
+- Acessar `https://localhost:5001/index.html` e a Api deverá está rodando corretamente!
