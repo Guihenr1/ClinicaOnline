@@ -9,15 +9,18 @@ using ClinicaOnline.Core.Configuration;
 using ClinicaOnline.Core.Entities;
 using ClinicaOnline.Core.Repositories;
 using ClinicaOnline.Core.Utils;
+using Microsoft.Extensions.Configuration;
 
 namespace ClinicaOnline.Application.Services
 {
     public class UsuarioService : IUsuarioService
     {
         private IUsuarioRepository _userRepository;
-        public UsuarioService(IUsuarioRepository userRepository)
+        public IConfiguration _configuration { get; }
+        public UsuarioService(IUsuarioRepository userRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
+            _configuration = configuration;
         }
 
         public async Task<UserResponse> Add(UserRequest user)
@@ -50,8 +53,8 @@ namespace ClinicaOnline.Application.Services
                 return response;
             }
 
-            var expires = Settings.TokenExpires;
-            var token = TokenService.GenerateToken(user, expires);
+            var expires = DateTime.UtcNow.AddHours(Convert.ToDouble(_configuration["TokenExpires"]));
+            var token = TokenService.GenerateToken(user, expires, _configuration);
 
             return new UserAuthenticateResponse {
                 accessToken = token,

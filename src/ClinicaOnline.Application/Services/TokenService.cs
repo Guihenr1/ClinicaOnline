@@ -2,18 +2,18 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using ClinicaOnline.Core.Configuration;
 using ClinicaOnline.Core.Entities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ClinicaOnline.Application.Services
 {
     public static class TokenService
     {
-        public static string GenerateToken(Usuario user, DateTime expires)
+        public static string GenerateToken(Usuario user, DateTime expires, IConfiguration configuration)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(Settings.Secret);
+            var key = Encoding.ASCII.GetBytes(configuration["Secret"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]

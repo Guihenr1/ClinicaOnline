@@ -111,7 +111,7 @@ namespace ClinicaOnline.Web
 
         public void ConfigureJwt(IServiceCollection services)
         {
-            var key = Encoding.ASCII.GetBytes(Settings.Secret);
+            var key = Encoding.ASCII.GetBytes(Configuration["Secret"]);
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
