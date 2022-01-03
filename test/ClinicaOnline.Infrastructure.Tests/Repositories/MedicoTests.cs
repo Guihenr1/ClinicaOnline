@@ -37,6 +37,10 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
 
             var medicosFromRepository = await _medicoRepository.GetAllAsync();
             Assert.Equal(MedicoBuilder.Id, medicosFromRepository[0].Id);
+            Assert.Equal(MedicoBuilder.Nome, medicosFromRepository[0].Nome);
+            Assert.Equal(MedicoBuilder.Crm, medicosFromRepository[0].Crm);
+            Assert.Equal(MedicoBuilder.UfCrm, medicosFromRepository[0].UfCrm);
+            Assert.Equal(MedicoBuilder.Especialidade, medicosFromRepository[0].Especialidade);
         }
 
         [Fact]
@@ -46,6 +50,10 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
             var medicoAdded = await _medicoRepository.Add(existingMedico);
 
             Assert.Equal(MedicoBuilder.Id, medicoAdded.Id);
+            Assert.Equal(MedicoBuilder.Nome, medicoAdded.Nome);
+            Assert.Equal(MedicoBuilder.Crm, medicoAdded.Crm);
+            Assert.Equal(MedicoBuilder.UfCrm, medicoAdded.UfCrm);
+            Assert.Equal(MedicoBuilder.Especialidade, medicoAdded.Especialidade);
         }
 
         [Fact]
