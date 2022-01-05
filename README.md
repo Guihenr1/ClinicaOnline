@@ -1,9 +1,6 @@
 # Clínica Online 
 
 
-## Projeto desafio para a BuiltCode.
-
-
 ### Pré-requisitos
 
 - .Net 5 
