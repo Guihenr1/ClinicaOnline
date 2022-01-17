@@ -20,3 +20,8 @@ dotnet run
 ```
 
 - Acessar `https://localhost:5001/index.html` e a Api deverá está rodando corretamente!
+
+### Usuário padrão
+
+Usuario: contato@builtcode.com.br
+Senha: 123456
