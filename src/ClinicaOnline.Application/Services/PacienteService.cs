@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Mapper;
 using ClinicaOnline.Application.Models.Request;
 using ClinicaOnline.Application.Models.Response;
 using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Core.Notification;
 using ClinicaOnline.Core.Repositories;
 using ClinicaOnline.Core.Utils;
 
@@ -16,10 +16,12 @@ namespace ClinicaOnline.Application.Services
     {
         private IPacienteRepository _pacienteRepository;
         private IMedicoService _medicoService;
-        public PacienteService(IPacienteRepository pacienteRepository, IMedicoService medicoService)
+        private NotificationContext _notificationContext;
+        public PacienteService(IPacienteRepository pacienteRepository, IMedicoService medicoService, NotificationContext notificationContext)
         {
             _pacienteRepository = pacienteRepository;
             _medicoService = medicoService;
+            _notificationContext = notificationContext;
         }
 
         public async Task<IReadOnlyList<Paciente>> GetPacientesByMedicoId(Guid medicoId)
@@ -37,12 +39,12 @@ namespace ClinicaOnline.Application.Services
             var response = new PacienteResponse();
 
             if (await _pacienteRepository.GetByCpf(model.Cpf) != null){
-                response.AddError("Cpf já cadastrado");
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Cpf já cadastrado");
                 return response;
             }
 
             if (!Cpf.ValidateCpf(model.Cpf)){
-                response.AddError("Cpf inválido");
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Cpf inválido");
                 return response;
             }        
 
@@ -51,7 +53,7 @@ namespace ClinicaOnline.Application.Services
 
             mapped.Medico = await _medicoService.GetBydId(model.MedicoId);
             if (mapped.Medico == null) {
-                response.AddError("Médico não encontrado");
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Médico não encontrado");
                 return response;
             }
 
@@ -60,19 +62,17 @@ namespace ClinicaOnline.Application.Services
             return ObjectMapper.Mapper.Map<PacienteResponse>(pacienteAdd);
         }
 
-        public async Task<PacienteResponse> Update(Guid id, PacienteRequest model)
+        public async Task Update(Guid id, PacienteRequest model)
         {
-            var response = new PacienteResponse();
-
             var getByCpf = await _pacienteRepository.GetByCpf(model.Cpf);
             if (getByCpf != null && getByCpf.Id != id){
-                response.AddError("Cpf já cadastrado");
-                return response;
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Cpf já cadastrado");
+                return;
             }
 
             if (!Cpf.ValidateCpf(model.Cpf)){
-                response.AddError("Cpf inválido");
-                return response;
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Cpf inválido");
+                return;
             }        
 
             var mapped = ObjectMapper.Mapper.Map<Paciente>(model);
@@ -80,28 +80,23 @@ namespace ClinicaOnline.Application.Services
 
             var medico = await _medicoService.GetBydId(model.MedicoId);
             if (medico == null) {
-                response.AddError("Médico não encontrado");
-                return response;
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Médico não encontrado");
+                return;
             }
 
             await _pacienteRepository.Update(mapped);
-
-            return response;
         }
 
-        public async Task<PacienteResponse> Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            var response = new PacienteResponse();
             var paciente = await _pacienteRepository.GetById(id);
 
             if (paciente == null) {
-                response.AddError("Paciente não encontrado");
-                return response;
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Paciente não encontrado");
+                return;
             }
 
             await _pacienteRepository.Delete(paciente);
-
-            return response;
         }
     }
 }

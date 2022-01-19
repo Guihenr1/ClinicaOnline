@@ -12,7 +12,7 @@ namespace ClinicaOnline.Application.Interfaces
         Task<IReadOnlyList<Paciente>> GetPacientesByMedicoId(Guid medicoId);
         Task<IReadOnlyList<Paciente>> GetAll();
         Task<PacienteResponse> Add(PacienteRequest model);
-        Task<PacienteResponse> Update(Guid id, PacienteRequest model);
-        Task<PacienteResponse> Delete(Guid id);
+        Task Update(Guid id, PacienteRequest model);
+        Task Delete(Guid id);
     }
 }

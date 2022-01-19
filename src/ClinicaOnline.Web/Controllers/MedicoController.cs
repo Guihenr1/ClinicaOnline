@@ -3,14 +3,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
-using ClinicaOnline.Web.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicaOnline.Web.Controllers
 {
     [Route("v1/medico")]
-    public class MedicoController : MainController
+    public class MedicoController : Controller
     {
         readonly IMedicoService _medicoService;
 
@@ -40,7 +39,7 @@ namespace ClinicaOnline.Web.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            return CustomResponse(await _medicoService.Add(medico));
+            return Ok(await _medicoService.Add(medico));
         }
 
         /// <summary>
@@ -54,12 +53,9 @@ namespace ClinicaOnline.Web.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var result = await _medicoService.Update(id, medico);
+            await _medicoService.Update(id, medico);
 
-            if (!result.IsValid())
-                return CustomResponse(result);
-            else
-                return NoContent();
+            return NoContent();
         }
 
 
@@ -72,12 +68,9 @@ namespace ClinicaOnline.Web.Controllers
         [Authorize(Roles = "Admin,Atendente")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var result = await _medicoService.Delete(id);
+            await _medicoService.Delete(id);
 
-            if (!result.IsValid())
-                return CustomResponse(result);
-            else
-                return NoContent();
+            return NoContent();
         }
 
         /// <summary>

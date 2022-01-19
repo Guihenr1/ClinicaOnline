@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
-using ClinicaOnline.Web.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +9,7 @@ namespace ClinicaOnline.Web.Controllers
 {
     [Route("v1/parceiro")]
     [Authorize(Roles = "Admin")]
-    public class ParceiroController : MainController
+    public class ParceiroController : Controller
     {
         readonly IParceiroService _parceiroService;
 
@@ -49,7 +48,7 @@ namespace ClinicaOnline.Web.Controllers
         [Route("update-apikey/{id}")]
         public async Task<IActionResult> UpdateApiKey([FromRoute]Guid id)
         {
-            return CustomResponse(await _parceiroService.UpdateApiKey(id));
+            return Ok(await _parceiroService.UpdateApiKey(id));
         }
     }
 }

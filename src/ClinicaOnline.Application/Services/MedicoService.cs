@@ -7,6 +7,7 @@ using ClinicaOnline.Application.Mapper;
 using ClinicaOnline.Application.Models.Request;
 using ClinicaOnline.Application.Models.Response;
 using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Core.Notification;
 using ClinicaOnline.Core.Repositories;
 
 namespace ClinicaOnline.Application.Services
@@ -15,10 +16,12 @@ namespace ClinicaOnline.Application.Services
     {
         private IMedicoRepository _medicoRepository;
         private Lazy<IPacienteService> _pacienteService;
-        public MedicoService(IMedicoRepository medicoRepository, Lazy<IPacienteService> pacienteService)
+        private NotificationContext _notificationContext;
+        public MedicoService(IMedicoRepository medicoRepository, Lazy<IPacienteService> pacienteService, NotificationContext notificationContext)
         {
             _medicoRepository = medicoRepository;
             _pacienteService = pacienteService;
+            _notificationContext = notificationContext;
         }
 
         public async Task<IReadOnlyList<Medico>> GetAll()
@@ -26,29 +29,25 @@ namespace ClinicaOnline.Application.Services
             return await _medicoRepository.GetAll();
         }
 
-        public async Task<MedicoResponse> Update(Guid id, MedicoRequest model)
+        public async Task Update(Guid id, MedicoRequest model)
         {
-            var response = new MedicoResponse();
-
             var checkMedicoExist = await _medicoRepository.GetById(id);
             if (checkMedicoExist == null)
             {
-                response.AddError("Médico não encontrado");
-                return response;
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Médico não encontrado");
+                return;
             }
 
             var checkCrmAndUfCrm = await _medicoRepository.GetByCrmAndUfCrm(model.Crm, model.UfCrm);
             if (checkCrmAndUfCrm != null && checkCrmAndUfCrm.Id != id)
             {
-                response.AddError("CRM e Uf CRM já cadastrados para outro médico");
-                return response;
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "CRM e Uf CRM já cadastrados para outro médico");
+                return;
             }
 
             var medico = ObjectMapper.Mapper.Map<Medico>(model);
             medico.Id = id;
             await _medicoRepository.Update(medico);
-
-            return response;
         }
 
         public async Task<MedicoResponse> Add(MedicoRequest medico)
@@ -57,8 +56,8 @@ namespace ClinicaOnline.Application.Services
 
             var checkCrmAndUfCrm = await _medicoRepository.GetByCrmAndUfCrm(medico.Crm, medico.UfCrm);
             if (checkCrmAndUfCrm != null)
-            {
-                response.AddError("CRM e Uf CRM já cadastrados");
+            {                
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "CRM e Uf CRM já cadastrados");
                 return response;
             }
 
@@ -67,27 +66,25 @@ namespace ClinicaOnline.Application.Services
             return ObjectMapper.Mapper.Map<MedicoResponse>(medicoAdd);
         }
 
-        public async Task<MedicoResponse> Delete(Guid medicoId)
+        public async Task Delete(Guid medicoId)
         {
             var response = new MedicoResponse();
 
             var pacientes = await _pacienteService.Value.GetPacientesByMedicoId(medicoId);
             if (pacientes.Any())
             {
-                response.AddError("Não é possível excluir médicos com pacientes associados");
-                return response;
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Não é possível excluir médicos com pacientes associados");
+                return;
             }
 
             var medico = await _medicoRepository.GetById(medicoId);
             if (medico == null)
             {
-                response.AddError("Médico não encontrado");
-                return response;
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Médico não encontrado");
+                return;
             }
             
             await _medicoRepository.Delete(medico);
-
-            return response;
         }
 
         public async Task<Medico> GetBydId(Guid id)

@@ -11,8 +11,8 @@ namespace ClinicaOnline.Application.Interfaces
     {
         Task<IReadOnlyList<Medico>> GetAll();
         Task<MedicoResponse> Add(MedicoRequest medico);
-        Task<MedicoResponse> Update(Guid id, MedicoRequest model);
-        Task<MedicoResponse> Delete(Guid medicoId);
+        Task Update(Guid id, MedicoRequest model);
+        Task Delete(Guid medicoId);
         Task<Medico> GetBydId(Guid id);
         Task<IReadOnlyList<Medico>> GetAllForPartners(string ufCrm);
     }

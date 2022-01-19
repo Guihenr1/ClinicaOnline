@@ -5,18 +5,20 @@ using System.Reflection;
 using System.Text;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Services;
-using ClinicaOnline.Core.Configuration;
+using ClinicaOnline.Core.Notification;
 using ClinicaOnline.Core.Repositories;
 using ClinicaOnline.Core.Repositories.Base;
 using ClinicaOnline.Infrastructure.Data;
 using ClinicaOnline.Infrastructure.Repositories;
 using ClinicaOnline.Infrastructure.Repositories.Base;
 using ClinicaOnline.Web.Attributes;
+using ClinicaOnline.Web.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,6 +50,9 @@ namespace ClinicaOnline.Web
                     policyBuilder => policyBuilder
                         .AddRequirements(new ApiKeyRequirement()));
             });
+        
+            services.AddMvc(options => options.Filters.Add<NotificationFilter>())
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -98,6 +103,7 @@ namespace ClinicaOnline.Web
             services.AddScoped<IMedicoService, MedicoService>();
             services.AddScoped<IPacienteRepository, PacienteRepository>();
             services.AddScoped<IPacienteService, PacienteService>();
+            services.AddScoped<NotificationContext>();
 
             services.AddTransient<IAuthorizationHandler, ApiKeyRequirementHandler>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();

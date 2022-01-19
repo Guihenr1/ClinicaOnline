@@ -6,6 +6,7 @@ using ClinicaOnline.Application.Mapper;
 using ClinicaOnline.Application.Models.Request;
 using ClinicaOnline.Application.Models.Response;
 using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Core.Notification;
 using ClinicaOnline.Core.Repositories;
 
 namespace ClinicaOnline.Application.Services
@@ -13,9 +14,11 @@ namespace ClinicaOnline.Application.Services
     public class ParceiroService : IParceiroService
     {
         private IParceiroRepository _parceiroRepository;
-        public ParceiroService(IParceiroRepository parceiroRepository)
+        private NotificationContext _notificationContext;
+        public ParceiroService(IParceiroRepository parceiroRepository, NotificationContext notificationContext)
         {
             _parceiroRepository = parceiroRepository;
+            _notificationContext = notificationContext;
         }
 
         public async Task<Parceiro> Add(ParceiroRequest model)
@@ -40,7 +43,7 @@ namespace ClinicaOnline.Application.Services
             var parceiro = await _parceiroRepository.GetById(id);
 
             if (parceiro == null){
-                response.AddError("Parceiro não encontrado");
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Parceiro não encontrado");
                 return response;
             }
 

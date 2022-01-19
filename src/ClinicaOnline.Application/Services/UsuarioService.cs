@@ -7,6 +7,7 @@ using ClinicaOnline.Application.Models.Request;
 using ClinicaOnline.Application.Models.Response;
 using ClinicaOnline.Core.Configuration;
 using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Core.Notification;
 using ClinicaOnline.Core.Repositories;
 using ClinicaOnline.Core.Utils;
 using Microsoft.Extensions.Configuration;
@@ -17,10 +18,12 @@ namespace ClinicaOnline.Application.Services
     {
         private IUsuarioRepository _userRepository;
         public IConfiguration _configuration { get; }
-        public UsuarioService(IUsuarioRepository userRepository, IConfiguration configuration)
+        private NotificationContext _notificationContext;
+        public UsuarioService(IUsuarioRepository userRepository, IConfiguration configuration, NotificationContext notificationContext)
         {
             _userRepository = userRepository;
             _configuration = configuration;
+            _notificationContext = notificationContext;
         }
 
         public async Task<UserResponse> Add(UserRequest user)
@@ -30,7 +33,7 @@ namespace ClinicaOnline.Application.Services
             mapped.Id = Guid.NewGuid();
 
             if (await _userRepository.CheckEmailExists(user.Email)){
-                response.AddError("Email já está em uso");
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Email já está em uso");
                 return response;
             }
 
@@ -49,7 +52,7 @@ namespace ClinicaOnline.Application.Services
                 new Usuario { Senha = model.password, Email = model.email });
 
             if (user == null){
-                response.AddError("Email ou senha incorretos");
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Email ou senha incorretos");
                 return response;
             }
 

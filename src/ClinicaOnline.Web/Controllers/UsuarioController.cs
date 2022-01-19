@@ -1,14 +1,13 @@
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
-using ClinicaOnline.Web.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicaOnline.Web.Controllers
 {
     [Route("v1/usuario")]
-    public class UsuarioController : MainController
+    public class UsuarioController : Controller
     {
         readonly IUsuarioService _usuarioService;
 
@@ -27,7 +26,7 @@ namespace ClinicaOnline.Web.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             
-            return CustomResponse(await _usuarioService.Authenticate(user));
+            return Ok(await _usuarioService.Authenticate(user));
         }
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace ClinicaOnline.Web.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            return CustomResponse(await _usuarioService.Add(user));
+            return Ok(await _usuarioService.Add(user));
         }
     }
 }
