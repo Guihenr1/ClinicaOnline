@@ -25,3 +25,9 @@ dotnet run
 
 Usuario: contato@builtcode.com.br
 Senha: 123456
+
+### Próximos passos
+
+- Deploy com Docker
+- Adicionar logs
+- Concluir testes
