@@ -14,12 +14,7 @@
 docker-compose up -d
 ```
 
-- Navegar por linha de comando até `src/ClinicaOnline.Web` e executar:
-```bash
-dotnet run
-```
-
-- Acessar `https://localhost:5001/index.html` e a Api deverá está rodando corretamente!
+- Acessar `http://localhost:5005/index.html` e a Api deverá está rodando corretamente!
 
 ### Usuário padrão
 
@@ -28,6 +23,7 @@ Senha: 123456
 
 ### Próximos passos
 
-- Deploy com Docker
 - Adicionar logs
 - Concluir testes
+- Migrar .Net 6
+- Deploy AWS com CI/CD

@@ -23,5 +23,12 @@ services:
     ports:
       - "5050:80"
 
+  clinicaonline:
+    build: .
+    ports:
+      - "5005:80"
+    depends_on:
+      - db
+
 volumes:
   db-data:
