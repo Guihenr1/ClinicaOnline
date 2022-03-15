@@ -30,5 +30,29 @@ services:
     depends_on:
       - db
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - network-elastic
+    environment:
+      discovery.type: single-node
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+  
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.11.1
+    ports:
+      - "5601:5601"
+    networks:
+      - network-elastic
+    depends_on:
+      - elasticsearch
+
 volumes:
   db-data:
+
+networks: 
+  network-elastic:
+    driver: bridge
