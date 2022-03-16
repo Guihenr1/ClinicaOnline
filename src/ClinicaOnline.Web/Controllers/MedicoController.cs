@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
+using ClinicaOnline.Application.Models.Response;
+using ClinicaOnline.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ClinicaOnline.Web.Controllers
 {
@@ -25,8 +29,20 @@ namespace ClinicaOnline.Web.Controllers
         [Route("get-all")]
         [Authorize(Roles = "Admin,Atendente")]
         public async Task<IActionResult> GetAll()
-        {
-            return Ok(await _medicoService.GetAll());
+        {        
+            IReadOnlyList<Medico> response = new List<Medico>();     
+            try
+            {
+                Log.Information("Inicio do obter todos os medicos");
+                response = await _medicoService.GetAll();
+                Log.Information("Fim do obter todos os medicos: {@response}", response);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Erro ao tentar obter todos os medicos: {@ex}", ex);
+                return BadRequest();
+            }
+            return Ok(response);
         }
 
         /// <summary>
@@ -37,9 +53,21 @@ namespace ClinicaOnline.Web.Controllers
         [Authorize(Roles = "Admin,Atendente")]
         public async Task<IActionResult> Add([FromBody] MedicoRequest medico)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var response = new MedicoResponse();
+            try
+            {
+                Log.Information("Inicio do adicionar medico");
+                if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            return Ok(await _medicoService.Add(medico));
+                response = await _medicoService.Add(medico);
+                Log.Information("Fim do adicionar medico {@response}", response);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Erro ao tentar adicionar medico: {@ex}", ex);
+                return BadRequest();
+            }
+            return Ok(response);
         }
 
         /// <summary>
@@ -51,9 +79,19 @@ namespace ClinicaOnline.Web.Controllers
         [Authorize(Roles = "Admin,Atendente")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] MedicoRequest medico)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            try
+            {
+                Log.Information("Inicio do editar medico");
+                if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _medicoService.Update(id, medico);
+                await _medicoService.Update(id, medico);
+                Log.Information("Fim do editar medico");
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Erro ao tentar editar medico: {@ex}", ex);
+                return BadRequest();
+            }
 
             return NoContent();
         }
@@ -68,7 +106,17 @@ namespace ClinicaOnline.Web.Controllers
         [Authorize(Roles = "Admin,Atendente")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            await _medicoService.Delete(id);
+            try
+            {
+                Log.Information("Inicio do excluir medico");
+                await _medicoService.Delete(id);
+                Log.Information("Fim do excluir medico");
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Erro ao tentar excluir medico: {@ex}", ex);
+                return BadRequest();
+            }
 
             return NoContent();
         }
@@ -83,7 +131,19 @@ namespace ClinicaOnline.Web.Controllers
         [Authorize(Policy = "ApiKeyPolicy")]
         public async Task<IActionResult> GetAllForPartners([FromHeader(Name = "x-api-key")][Required] string xApiKey, string ufCrm)
         {
-            return Ok(await _medicoService.GetAllForPartners(ufCrm));
+            IReadOnlyList<Medico> response = new List<Medico>();
+            try
+            {
+                Log.Information("Inicio do obter todos os medicos para parceiros");
+                response = await _medicoService.GetAllForPartners(ufCrm);
+                Log.Information("Fim do obter todos os medicos para parceiros: {@response}", response);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Erro ao tentar obter todos os medicos para parceiros: {@ex}", ex);
+                return BadRequest();
+            }
+            return Ok(response);
         }
     }
 }

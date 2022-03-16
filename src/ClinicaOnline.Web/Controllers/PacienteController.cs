@@ -1,9 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
+using ClinicaOnline.Application.Models.Response;
+using ClinicaOnline.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ClinicaOnline.Web.Controllers
 {
@@ -25,7 +29,19 @@ namespace ClinicaOnline.Web.Controllers
         [Route("get-all")]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _pacienteService.GetAll());
+            IReadOnlyList<Paciente> response = new List<Paciente>();
+            try
+            {
+                Log.Information("Inicio do obter todos os pacientes");
+                response = await _pacienteService.GetAll();
+                Log.Information("Fim do obter todos os pacientes");
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Erro ao obter todos os pacientes: {@ex}", ex);
+                return BadRequest();
+            }
+            return Ok(response);
         }
 
         /// <summary>
@@ -35,9 +51,21 @@ namespace ClinicaOnline.Web.Controllers
         [Route("add-paciente")]
         public async Task<IActionResult> Add([FromBody]PacienteRequest paciente)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var response = new PacienteResponse();
+            try
+            {
+                Log.Information("Inicio do adicionar paciente");
+                if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            return Ok(await _pacienteService.Add(paciente));
+                response = await _pacienteService.Add(paciente);
+                Log.Information("Fim do adicionar paciente");
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Erro ao adicionar paciente: {@ex}", ex);
+                return BadRequest();
+            }
+            return Ok(response);
         }
 
         /// <summary>
@@ -48,9 +76,19 @@ namespace ClinicaOnline.Web.Controllers
         [Route("update-paciente/{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody]PacienteRequest paciente)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            try
+            {
+                Log.Information("Inicio do editar paciente");
+                if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _pacienteService.Update(id, paciente);
+                await _pacienteService.Update(id, paciente);
+                Log.Information("Fim do editar paciente");
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Erro ao editar paciente: {@ex}", ex);
+                return BadRequest();
+            }
             
             return NoContent();
         }
@@ -63,7 +101,17 @@ namespace ClinicaOnline.Web.Controllers
         [Route("delete-paciente/{id}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            await _pacienteService.Delete(id);
+            try
+            {
+                Log.Information("Inicio do excluir paciente");
+                await _pacienteService.Delete(id);
+                Log.Information("Fim do excluir paciente");
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Erro ao excluir paciente: {@ex}", ex);
+                return BadRequest();
+            }
 
             return NoContent();
         }
