@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using ClinicaOnline.Core.Entities;
 using ClinicaOnline.Infrastructure.Data;
@@ -6,7 +7,6 @@ using ClinicaOnline.Infrastructure.Repositories;
 using ClinicaOnline.Infrastructure.Tests.Builders;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace ClinicaOnline.Infrastructure.Tests.Repositories
 {
@@ -14,17 +14,14 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
     {
         private readonly Context _context;
         private readonly MedicoRepository _medicoRepository;
-        private readonly ITestOutputHelper _output;
         private MedicoBuilder MedicoBuilder { get; } = new MedicoBuilder();
 
-        public MedicoTests(ITestOutputHelper output)
+        public MedicoTests()
         {
-            _output = output;
             var dbOptions = new DbContextOptionsBuilder<Context>()
                 .UseInMemoryDatabase(databaseName: "DbTests")
                 .Options;
             _context = new Context(dbOptions);
-            _context.Database.EnsureDeleted();
             _medicoRepository = new MedicoRepository(_context);
         }
 
@@ -36,24 +33,26 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
             _context.SaveChanges();
 
             var medicosFromRepository = await _medicoRepository.GetAllAsync();
-            Assert.Equal(MedicoBuilder.Id, medicosFromRepository[0].Id);
-            Assert.Equal(MedicoBuilder.Nome, medicosFromRepository[0].Nome);
-            Assert.Equal(MedicoBuilder.Crm, medicosFromRepository[0].Crm);
-            Assert.Equal(MedicoBuilder.UfCrm, medicosFromRepository[0].UfCrm);
-            Assert.Equal(MedicoBuilder.Especialidade, medicosFromRepository[0].Especialidade);
+            var medicoAdded = medicosFromRepository.First(x => x.Id == existingMedico.Id);
+            Assert.Equal(existingMedico.Id, medicoAdded.Id);
+            Assert.Equal(existingMedico.Nome, medicoAdded.Nome);
+            Assert.Equal(existingMedico.Crm, medicoAdded.Crm);
+            Assert.Equal(existingMedico.UfCrm, medicoAdded.UfCrm);
+            Assert.Equal(existingMedico.Especialidade, medicoAdded.Especialidade);
         }
 
         [Fact]
         public async Task Add_Medico()
         {
             var existingMedico = MedicoBuilder.WithDefaultValues();
-            var medicoAdded = await _medicoRepository.Add(existingMedico);
+            var medicoAdded = await _medicoRepository.Add(existingMedico);       
+            _context.SaveChanges();
 
-            Assert.Equal(MedicoBuilder.Id, medicoAdded.Id);
-            Assert.Equal(MedicoBuilder.Nome, medicoAdded.Nome);
-            Assert.Equal(MedicoBuilder.Crm, medicoAdded.Crm);
-            Assert.Equal(MedicoBuilder.UfCrm, medicoAdded.UfCrm);
-            Assert.Equal(MedicoBuilder.Especialidade, medicoAdded.Especialidade);
+            Assert.Equal(existingMedico.Id, medicoAdded.Id);
+            Assert.Equal(existingMedico.Nome, medicoAdded.Nome);
+            Assert.Equal(existingMedico.Crm, medicoAdded.Crm);
+            Assert.Equal(existingMedico.UfCrm, medicoAdded.UfCrm);
+            Assert.Equal(existingMedico.Especialidade, medicoAdded.Especialidade);
         }
 
         [Fact]
@@ -64,17 +63,19 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
             _context.SaveChanges();
 
             var medicoFromRepository = await _medicoRepository.GetById(existingMedico.Id);
-            Assert.Equal(MedicoBuilder.Id, medicoFromRepository.Id);
-            Assert.Equal(MedicoBuilder.Nome, medicoFromRepository.Nome);
-            Assert.Equal(MedicoBuilder.Crm, medicoFromRepository.Crm);
-            Assert.Equal(MedicoBuilder.UfCrm, medicoFromRepository.UfCrm);
-            Assert.Equal(MedicoBuilder.Especialidade, medicoFromRepository.Especialidade);
+            Assert.Equal(existingMedico.Id, medicoFromRepository.Id);
+            Assert.Equal(existingMedico.Nome, medicoFromRepository.Nome);
+            Assert.Equal(existingMedico.Crm, medicoFromRepository.Crm);
+            Assert.Equal(existingMedico.UfCrm, medicoFromRepository.UfCrm);
+            Assert.Equal(existingMedico.Especialidade, medicoFromRepository.Especialidade);
         }
 
         [Fact]
         public async Task Update_Medico()
         {
+            var id = Guid.NewGuid();
             var existingMedico = MedicoBuilder.WithDefaultValues();
+            existingMedico.Id = id;
             _context.Medicos.Add(existingMedico);           
             _context.SaveChanges();
 
@@ -83,15 +84,15 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
             var newEspecialidade = "Cardiologista";
             var newUfCrm = "PR";
             await _medicoRepository.Update(new Medico() {
-                Id = MedicoBuilder.Id,
+                Id = id,
                 Crm = newCrm,
                 Nome = newNome,
                 Especialidade = newEspecialidade,
                 UfCrm = newUfCrm
             });
 
-            var medicoFromRepository = await _medicoRepository.GetById(MedicoBuilder.Id);
-            Assert.Equal(MedicoBuilder.Id, medicoFromRepository.Id);
+            var medicoFromRepository = await _medicoRepository.GetById(id);
+            Assert.Equal(id, medicoFromRepository.Id);
             Assert.Equal(newNome, medicoFromRepository.Nome);
             Assert.Equal(newCrm, medicoFromRepository.Crm);
             Assert.Equal(newUfCrm, medicoFromRepository.UfCrm);
@@ -113,17 +114,19 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         [Fact]
         public async Task Get_Medico_By_Crm_And_UfCrm()
         {
+            _context.Database.EnsureDeleted();
+
             var existingMedico = MedicoBuilder.WithDefaultValues();
             _context.Medicos.Add(existingMedico);           
             _context.SaveChanges();
 
             var medicoFromRepository = await _medicoRepository
                 .GetByCrmAndUfCrm(existingMedico.Crm, existingMedico.UfCrm);
-            Assert.Equal(MedicoBuilder.Id, medicoFromRepository.Id);
-            Assert.Equal(MedicoBuilder.Nome, medicoFromRepository.Nome);
-            Assert.Equal(MedicoBuilder.Crm, medicoFromRepository.Crm);
-            Assert.Equal(MedicoBuilder.UfCrm, medicoFromRepository.UfCrm);
-            Assert.Equal(MedicoBuilder.Especialidade, medicoFromRepository.Especialidade);
+            Assert.Equal(existingMedico.Id, medicoFromRepository.Id);
+            Assert.Equal(existingMedico.Nome, medicoFromRepository.Nome);
+            Assert.Equal(existingMedico.Crm, medicoFromRepository.Crm);
+            Assert.Equal(existingMedico.UfCrm, medicoFromRepository.UfCrm);
+            Assert.Equal(existingMedico.Especialidade, medicoFromRepository.Especialidade);
         }
     }
 }
