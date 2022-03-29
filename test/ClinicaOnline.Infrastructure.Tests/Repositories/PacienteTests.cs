@@ -7,7 +7,6 @@ using ClinicaOnline.Infrastructure.Repositories;
 using ClinicaOnline.Infrastructure.Tests.Builders;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace ClinicaOnline.Infrastructure.Tests.Repositories
 {
@@ -21,7 +20,7 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         public PacienteTests()
         {
             var dbOptions = new DbContextOptionsBuilder<Context>()
-                .UseInMemoryDatabase(databaseName: "DbTests")
+                .UseInMemoryDatabase(databaseName: "DbTestsPaciente")
                 .Options;
             _context = new Context(dbOptions);
             _pacienteRepository = new PacienteRepository(_context);
@@ -30,6 +29,9 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         [Fact]
         public async Task Get_Pacientes_By_MedicoId()
         {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+
             var existingPaciente = PacienteBuilder.WithDefaultValues();
             var existingMedico = MedicoBuilder.WithDefaultValues();
             existingPaciente.MedicoId = existingMedico.Id;
@@ -48,6 +50,9 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         [Fact]
         public async Task Get_All_Pacientes()
         {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+
             var existingPaciente = PacienteBuilder.WithDefaultValues();
             _context.Pacientes.Add(existingPaciente);        
             _context.SaveChanges();
@@ -63,6 +68,9 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         [Fact]
         public async Task Add_Paciente()
         {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+
             var existingPaciente = PacienteBuilder.WithDefaultValues();
             var pacienteAdded = await _pacienteRepository.Add(existingPaciente);    
             _context.SaveChanges();
@@ -78,6 +86,7 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         public async Task Get_Pacientes_By_CPF()
         {
             _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
 
             var existingPaciente = PacienteBuilder.WithDefaultValues();
             _context.Pacientes.Add(existingPaciente);        
@@ -94,6 +103,9 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         [Fact]
         public async Task Update_Pacientes()
         {            
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+
             var id = Guid.NewGuid();
             var existingPaciente = PacienteBuilder.WithDefaultValues();
             var existingMedico = MedicoBuilder.WithDefaultValues();
@@ -127,6 +139,9 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         [Fact]
         public async Task Delete_Paciente()
         {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+
             var existingPaciente = PacienteBuilder.WithDefaultValues();
             _context.Pacientes.Add(existingPaciente); 
 
@@ -140,6 +155,9 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         [Fact]
         public async Task Get_Pacientes_By_Id()
         {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+
             var existingPaciente = PacienteBuilder.WithDefaultValues();
             _context.Pacientes.Add(existingPaciente);        
             _context.SaveChanges();

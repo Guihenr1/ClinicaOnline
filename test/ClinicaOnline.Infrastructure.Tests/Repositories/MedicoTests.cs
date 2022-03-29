@@ -19,7 +19,7 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         public MedicoTests()
         {
             var dbOptions = new DbContextOptionsBuilder<Context>()
-                .UseInMemoryDatabase(databaseName: "DbTests")
+                .UseInMemoryDatabase(databaseName: "DbTestsMedico")
                 .Options;
             _context = new Context(dbOptions);
             _medicoRepository = new MedicoRepository(_context);
@@ -28,6 +28,9 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         [Fact]
         public async Task Get_All_Medicos()
         {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+            
             var existingMedico = MedicoBuilder.WithDefaultValues();
             _context.Medicos.Add(existingMedico);           
             _context.SaveChanges();
@@ -44,6 +47,9 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         [Fact]
         public async Task Add_Medico()
         {
+            _context.Database.EnsureDeleted(); 
+            _context.Database.EnsureCreated();
+
             var existingMedico = MedicoBuilder.WithDefaultValues();
             var medicoAdded = await _medicoRepository.Add(existingMedico);       
             _context.SaveChanges();
@@ -58,6 +64,9 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         [Fact]
         public async Task Get_Medico_By_Id()
         {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+
             var existingMedico = MedicoBuilder.WithDefaultValues();
             _context.Medicos.Add(existingMedico);           
             _context.SaveChanges();
@@ -73,6 +82,9 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         [Fact]
         public async Task Update_Medico()
         {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+
             var id = Guid.NewGuid();
             var existingMedico = MedicoBuilder.WithDefaultValues();
             existingMedico.Id = id;
@@ -102,6 +114,9 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         [Fact]
         public async Task Delete_Medico()
         {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+
             var existingMedico = MedicoBuilder.WithDefaultValues();
             var medicoAdded = await _medicoRepository.Add(existingMedico);
 
@@ -115,6 +130,7 @@ namespace ClinicaOnline.Infrastructure.Tests.Repositories
         public async Task Get_Medico_By_Crm_And_UfCrm()
         {
             _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
 
             var existingMedico = MedicoBuilder.WithDefaultValues();
             _context.Medicos.Add(existingMedico);           
