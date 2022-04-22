@@ -14,7 +14,7 @@ namespace ClinicaOnline.Core.Notification
             _notifications = new List<Notification>();
         }
 
-        public void AddNotification(string key, string message)
+        public virtual void AddNotification(string key, string message)
         {
             _notifications.Add(new Notification(key, message));
         }

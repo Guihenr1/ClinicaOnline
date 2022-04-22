@@ -23,7 +23,6 @@ Senha: 123456
 
 ### Próximos passos
 
-- Concluir testes 
-- Adicionar a documentação como ver logs e verificar testes
+- Adicionar a documentação como ver logs(executar em produção) e verificar testes
 - Migrar .Net 6
 - Deploy AWS com CI/CD
