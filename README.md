@@ -18,7 +18,7 @@ docker-compose up -d
 
 ### Usuário padrão
 
-- Usuario: contato@builtcode.com.br Senha: 123456
+- Usuario: contato<span>@</span>builtcode.com.br Senha: 123456
 
 ### Logs
 
