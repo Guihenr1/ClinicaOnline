@@ -9,6 +9,7 @@ COPY src/ClinicaOnline.Core/*.csproj ./src/ClinicaOnline.Core/
 COPY src/ClinicaOnline.Infrastructure/*.csproj ./src/ClinicaOnline.Infrastructure/
 COPY src/ClinicaOnline.Web/*.csproj ./src/ClinicaOnline.Web/
 COPY test/ClinicaOnline.Infrastructure.Tests/*.csproj ./test/ClinicaOnline.Infrastructure.Tests/
+COPY test/ClinicaOnline.Application.Tests/*.csproj ./test/ClinicaOnline.Application.Tests/
 RUN dotnet restore
 
 # Copy everything else and build website
@@ -17,6 +18,7 @@ COPY src/ClinicaOnline.Core/. ./src/ClinicaOnline.Core/
 COPY src/ClinicaOnline.Infrastructure/. ./src/ClinicaOnline.Infrastructure/
 COPY src/ClinicaOnline.Web/. ./src/ClinicaOnline.Web/
 COPY test/ClinicaOnline.Infrastructure.Tests/. ./test/ClinicaOnline.Infrastructure.Tests/
+COPY test/ClinicaOnline.Application.Tests/. ./test/ClinicaOnline.Application.Tests/
 WORKDIR /app/src/ClinicaOnline.Web
 RUN dotnet publish -c release -o /app/publish
 

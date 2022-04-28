@@ -18,11 +18,20 @@ docker-compose up -d
 
 ### Usuário padrão
 
-Usuario: contato@builtcode.com.br
-Senha: 123456
+- Usuario: contato@builtcode.com.br Senha: 123456
+
+### Logs
+
+- A aplicação registra logs no Elastic Search que podem ser consultados no Kibana. Url: `http://localhost:5601/`
+
+### Testes
+
+- Testes podem ser executados com o comando 
+```bash
+dotnet test
+```
 
 ### Próximos passos
 
-- Adicionar a documentação como ver logs(executar em produção) e verificar testes
 - Migrar .Net 6
 - Deploy AWS com CI/CD
