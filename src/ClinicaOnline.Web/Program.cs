@@ -1,72 +1,56 @@
-using System;
-using ClinicaOnline.Infrastructure.Data;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ClinicaOnline.Web.Attributes;
+using ClinicaOnline.Web.Filters;
+using ClinicaOnline.Web.Configuration;
 using Serilog;
-using Serilog.Sinks.Elasticsearch;
 
-namespace ClinicaOnline.Web
+var builder = WebApplication.CreateBuilder(args);
+
+LoggingConfig.ConfigureLogging();
+builder.Host.UseSerilog();
+
+builder.Services.AddControllers();
+DependencyInjectionConfig.ConfigureAspnetRunServices(builder.Services, builder.Configuration);
+Configuration.ConfigureJwt(builder.Services, builder.Configuration);
+SwaggerConfig.ConfigureSwagger(builder.Services);
+
+builder.Services.AddAuthorization(authConfig =>
 {
-    public class Program
-    {
-        public static int Main(string[] args)
-        {
-            try
-            {
-                var hostBuilder = CreateHostBuilder(args).Build();                
-                Serilog.Log.Information("Iniciando Web Host");
-                SeedDatabase(hostBuilder);
+    authConfig.AddPolicy("ApiKeyPolicy",
+        policyBuilder => policyBuilder
+            .AddRequirements(new ApiKeyRequirement()));
+});
 
-                hostBuilder.Run();
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                Serilog.Log.Fatal(ex, "Host encerrado inesperadamente");
-                return 1;
-            }
-            finally
-            {
-                Serilog.Log.CloseAndFlush();
-            }
-        }
+builder.Services.AddMvc(options => options.Filters.Add<NotificationFilter>());
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    var settings = config.Build();
-                    Serilog.Log.Logger = new LoggerConfiguration()
-                        .Enrich.FromLogContext()
-                        .WriteTo.Elasticsearch(
-                            options:
-                                new ElasticsearchSinkOptions(
-                                    new Uri(settings["Elasticsearch:Uri"]))
-                                {
-                                    AutoRegisterTemplate = true,
-                                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-                                    IndexFormat = "apiclinicaonline-{0:yyyy.MM}"
-                                })
-                        .WriteTo.Console()
-                        .CreateLogger();
-                })
-                .UseSerilog()
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-        
-        private static void SeedDatabase(IHost host)
-        {
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+var app = builder.Build();
 
-                var context = services.GetRequiredService<Context>();
-                ContextSeed.Seed(context).Wait();
-            }
-        }
-    }
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClinicaOnline.Web v1");
+    c.RoutePrefix = string.Empty;
+});
+
+app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
+           
+Configuration.SeedDatabase(app);
+
+app.Run();

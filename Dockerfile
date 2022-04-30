@@ -1,5 +1,5 @@
 # First stage
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -23,7 +23,7 @@ WORKDIR /app/src/ClinicaOnline.Web
 RUN dotnet publish -c release -o /app/publish
 
 # Final stage
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "ClinicaOnline.Web.dll"]
