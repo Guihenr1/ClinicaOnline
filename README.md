@@ -33,5 +33,4 @@ dotnet test
 
 ### Próximos passos
 
-- Migrar .Net 6
 - Deploy AWS com CI/CD
