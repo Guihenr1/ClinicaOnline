@@ -30,7 +30,3 @@ docker-compose up -d
 ```bash
 dotnet test
 ```
-
-### Próximos passos
-
-- Deploy AWS com CI/CD
