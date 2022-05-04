@@ -26,7 +26,6 @@ namespace ClinicaOnline.Application.Services
 
         public async Task<IReadOnlyList<Medico>> GetAll()
         {
-            throw new Exception("Error");
             return await _medicoRepository.GetAll();
         }
 
