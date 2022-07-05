@@ -1,32 +1,32 @@
 # Clínica Online 
 
 
-### Pré-requisitos
+### Prerequisites
 
 - .Net 5 
 - Docker  
 - Docker-Compose 
 
-### Execução do projeto
+### Project execution
 
-- Executar na raiz do projeto:
+- Run in project root:
 ```bash
 docker-compose up -d
 ```
 
-- Acessar `http://localhost:5005/index.html` e a Api deverá está rodando corretamente!
+- Access `http://localhost:5005/index.html` and the API should be running correctly!
 
-### Usuário padrão
+### Default user
 
-- Usuario: contato<span>@</span>builtcode.com.br Senha: 123456
+- User: contato<span>@</span>builtcode.com.br Password: 123456
 
 ### Logs
 
-- A aplicação registra logs no Elastic Search que podem ser consultados no Kibana. Url: `http://localhost:5601/`
+- The application registers logs in Elastic Search that can be consulted in Kibana. Url: `http://localhost:5601/`
 
-### Testes
+### Tests
 
-- Testes podem ser executados com o comando 
+- Tests can be run with the command 
 ```bash
 dotnet test
 ```
