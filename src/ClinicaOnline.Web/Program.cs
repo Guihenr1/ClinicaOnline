@@ -50,7 +50,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
-           
-// Configuration.SeedDatabase(app);
+
+Configuration.SeedDatabase(app);
 
 app.Run();
