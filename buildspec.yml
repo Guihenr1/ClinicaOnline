@@ -26,5 +26,5 @@ phases:
 artifacts:
   files:
     - "**/*"
-  base-directory: .src/ClinicaOnline.Web/bin/Release/netcoreapp3.1/linux-x64/publish/
+  base-directory: .src/ClinicaOnline.Web/bin/Debug/net6.0/publish/
   discard-paths: no
