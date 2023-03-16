@@ -41,7 +41,7 @@ namespace ClinicaOnline.Application.Services
             var checkCrmAndUfCrm = await _medicoRepository.GetByCrmAndUfCrm(model.Crm, model.UfCrm);
             if (checkCrmAndUfCrm != null && checkCrmAndUfCrm.Id != id)
             {
-			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "CRM e Uf CRM já cadastrados para outro médico");
+			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "CRM e Uf já cadastrados para outro médico");
                 return;
             }
 
