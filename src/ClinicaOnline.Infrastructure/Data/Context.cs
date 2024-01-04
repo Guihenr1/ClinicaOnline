@@ -27,36 +27,36 @@ namespace ClinicaOnline.Infrastructure.Data
 
         private void ConfigureMedico(EntityTypeBuilder<Medico> builder)
         {
-            builder.HasKey(medico => medico.Id);              
+            builder.HasKey(medico => medico.Id);
 
-            builder.HasIndex(medico => new { medico.Crm, medico.UfCrm });   
+            builder.HasIndex(medico => new { medico.Crm, medico.UfCrm });
 
             builder.HasMany(medico => medico.Pacientes)
-                .WithOne(paciente => paciente.Medico);      
+                .WithOne(paciente => paciente.Medico);
 
             builder.Property(medico => medico.Nome)
                 .HasMaxLength(255)
-                .IsRequired();     
+                .IsRequired();
 
             builder.Property(cb => cb.Crm)
                 .HasMaxLength(50)
-                .IsRequired();   
+                .IsRequired();
 
             builder.Property(cb => cb.UfCrm)
                 .HasColumnName("Uf_crm")
                 .HasMaxLength(2)
-                .IsRequired();  
+                .IsRequired();
 
             builder.Property(cb => cb.Especialidade)
                 .HasMaxLength(255)
-                .IsRequired();  
+                .IsRequired();
         }
 
         private void ConfigurePaciente(EntityTypeBuilder<Paciente> builder)
         {
-            builder.HasKey(paciente => paciente.Id);              
+            builder.HasKey(paciente => paciente.Id);
 
-            builder.HasIndex(paciente => paciente.Cpf);    
+            builder.HasIndex(paciente => paciente.Cpf);
 
             builder.HasOne(paciente => paciente.Medico)
                 .WithMany(medico => medico.Pacientes)
@@ -65,14 +65,14 @@ namespace ClinicaOnline.Infrastructure.Data
 
             builder.Property(cb => cb.MedicoId)
                 .HasColumnName("Medico_Id")
-                .IsRequired(); 
+                .IsRequired();
 
             builder.Property(paciente => paciente.Nome)
-                .HasMaxLength(255);   
+                .HasMaxLength(255);
 
             builder.Property(paciente => paciente.Cpf)
                 .HasMaxLength(11)
-                .IsRequired();   
+                .IsRequired();
 
             builder.Property(paciente => paciente.Telefone)
                 .HasMaxLength(20);
@@ -80,11 +80,11 @@ namespace ClinicaOnline.Infrastructure.Data
 
         private void ConfigureParceiro(EntityTypeBuilder<Parceiro> builder)
         {
-            builder.HasKey(parceiro => parceiro.Id);         
+            builder.HasKey(parceiro => parceiro.Id);
 
             builder.Property(parceiro => parceiro.Nome)
                 .HasMaxLength(255)
-                .IsRequired();   
+                .IsRequired();
 
             builder.Property(parceiro => parceiro.ApiKey)
                 .HasColumnName("Api_Key")
@@ -94,21 +94,25 @@ namespace ClinicaOnline.Infrastructure.Data
 
         private void ConfigureUsuario(EntityTypeBuilder<Usuario> builder)
         {
-            builder.HasKey(usuario => usuario.Id);            
+            builder.HasKey(usuario => usuario.Id);
 
-            builder.HasIndex(usuario => usuario.Email);       
+            builder.HasIndex(usuario => usuario.Email);
 
             builder.Property(usuario => usuario.Email)
                 .HasMaxLength(255)
-                .IsRequired();         
+                .IsRequired();
 
             builder.Property(usuario => usuario.Nome)
                 .HasMaxLength(255)
-                .IsRequired();       
+                .IsRequired();
 
             builder.Property(usuario => usuario.Senha)
                 .HasMaxLength(255)
-                .IsRequired();     
+                .IsRequired();
+
+            builder.Property(usuario => usuario.ImagePath)
+                .HasMaxLength(255)
+                .IsRequired();
 
             builder.Property(usuario => usuario.Eperfil)
                 .HasColumnName("Perfil")

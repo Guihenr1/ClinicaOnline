@@ -32,13 +32,16 @@ namespace ClinicaOnline.Application.Services
             var mapped = ObjectMapper.Mapper.Map<Usuario>(user);
             mapped.Id = Guid.NewGuid();
 
-            if (await _userRepository.CheckEmailExists(user.Email)){
-			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Email já está em uso");
+            if (await _userRepository.CheckEmailExists(user.Email))
+            {
+                _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Email já está em uso");
                 return response;
             }
 
             mapped.Senha = Security.GenerateHash(user.Senha, Settings.Salt);
-            
+            mapped.ImagePath = ImageUtils.UploadImage(_configuration["ConnectionStrings:BlobStorage"],
+                                                        user.Foto, _configuration["BlobStorage:Container"]);
+
             var userAdd = await _userRepository.Add(mapped);
             return ObjectMapper.Mapper.Map<UserResponse>(userAdd);
         }
@@ -51,21 +54,25 @@ namespace ClinicaOnline.Application.Services
             var user = await _userRepository.GetUserByEmailAndPassword(
                 new Usuario { Senha = model.password, Email = model.email });
 
-            if (user == null){
-			    _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Email ou senha incorretos");
+            if (user == null)
+            {
+                _notificationContext.AddNotification(Guid.NewGuid().ToString(), "Email ou senha incorretos");
                 return response;
             }
 
             var expires = DateTime.UtcNow.AddHours(Convert.ToDouble(_configuration["TokenExpires"]));
             var token = TokenService.GenerateToken(user, expires, _configuration);
 
-            return new UserAuthenticateResponse {
+            return new UserAuthenticateResponse
+            {
                 accessToken = token,
                 expiresIn = expires.ToString("yyyy-MM-ddTHH:mm:ss"),
-                userInfo = new UserInfo {
+                userInfo = new UserInfo
+                {
                     email = user.Email,
                     name = user.Nome,
-                    perfil = user.Eperfil.ToString()
+                    perfil = user.Eperfil.ToString(),
+                    foto = user.ImagePath
                 }
             };
         }
