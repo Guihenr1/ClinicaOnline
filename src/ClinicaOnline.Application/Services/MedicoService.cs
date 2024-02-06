@@ -124,7 +124,6 @@ namespace ClinicaOnline.Application.Services
 
         private async Task<bool> ValidateDoctorSpeciality(string doctorSpeciality)
         {
-            var isValid = "false";
             var functionUrl = _configuration.GetSection("AzureFunctions")["ValidateDoctorSpeciality"];
             var functionKey = _configuration.GetSection("AzureFunctions")["ValidateDoctorSpecialityKey"];
 
@@ -132,12 +131,7 @@ namespace ClinicaOnline.Application.Services
             client.DefaultRequestHeaders.Add("x-functions-key", functionKey);
             var response = await client.PostAsJsonAsync(functionUrl, new { doctorSpeciality });
 
-            if (response.IsSuccessStatusCode)
-            {
-                isValid = await response.Content.ReadAsStringAsync();
-            }
-
-            return Convert.ToBoolean(isValid);
+            return response.IsSuccessStatusCode;
         }
     }
 }

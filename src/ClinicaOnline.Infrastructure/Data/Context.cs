@@ -111,8 +111,7 @@ namespace ClinicaOnline.Infrastructure.Data
                 .IsRequired();
 
             builder.Property(usuario => usuario.ImagePath)
-                .HasMaxLength(255)
-                .IsRequired();
+                .HasMaxLength(255);
 
             builder.Property(usuario => usuario.Eperfil)
                 .HasColumnName("Perfil")
