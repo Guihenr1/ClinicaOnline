@@ -125,7 +125,7 @@ namespace ClinicaOnline.Application.Services
         private async Task<bool> ValidateDoctorSpeciality(string doctorSpeciality)
         {
             var functionUrl = _configuration.GetSection("AzureFunctions")["ValidateDoctorSpeciality"];
-            var functionKey = _configuration.GetSection("AzureFunctions")["ValidateDoctorSpecialityKey"];
+            var functionKey = _configuration["ValidateDoctorSpecialityKey"];
 
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Add("x-functions-key", functionKey);

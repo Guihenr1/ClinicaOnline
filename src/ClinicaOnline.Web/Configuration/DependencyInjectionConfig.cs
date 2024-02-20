@@ -1,4 +1,6 @@
 using System;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Services;
 using ClinicaOnline.Core.Notification;
@@ -47,9 +49,8 @@ namespace ClinicaOnline.Web.Configuration
         }
 
         private static void ConfigureDatabases(IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddDbContext<Context>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("PostgreSql")));
+        {            
+            services.AddDbContext<Context>(options => options.UseNpgsql(configuration["ConnectionString"]));
         }
     }
 }

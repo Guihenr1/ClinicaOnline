@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ClinicaOnline.Web.Attributes;
 using ClinicaOnline.Web.Filters;
 using ClinicaOnline.Web.Configuration;
 using Serilog;
@@ -12,16 +11,10 @@ LoggingConfig.ConfigureLogging();
 builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
+builder.Services.AddKeyVault(builder.Configuration);
 DependencyInjectionConfig.ConfigureAspnetRunServices(builder.Services, builder.Configuration);
 Configuration.ConfigureJwt(builder.Services, builder.Configuration);
 SwaggerConfig.ConfigureSwagger(builder.Services);
-
-builder.Services.AddAuthorization(authConfig =>
-{
-    authConfig.AddPolicy("ApiKeyPolicy",
-        policyBuilder => policyBuilder
-            .AddRequirements(new ApiKeyRequirement()));
-});
 
 builder.Services.AddMvc(options => options.Filters.Add<NotificationFilter>());
 
