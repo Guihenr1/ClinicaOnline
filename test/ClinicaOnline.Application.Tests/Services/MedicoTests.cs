@@ -11,6 +11,7 @@ using Moq;
 using Xunit;
 using AutoMapper;
 using ClinicaOnline.Application.Models.Response;
+using Microsoft.Extensions.Configuration;
 
 namespace ClinicaOnline.Application.Tests.Services
 {
@@ -20,6 +21,7 @@ namespace ClinicaOnline.Application.Tests.Services
         private Mock<IPacienteService> _mockPacienteService;
         private Mock<Lazy<IPacienteService>> _mockLazyPacienteService;
         private Mock<NotificationContext> _mockNotificationContext;
+        private Mock<IConfiguration> _mockConfiguration;
 
         public MedicoTests()
         {
@@ -27,6 +29,7 @@ namespace ClinicaOnline.Application.Tests.Services
             _mockPacienteService = new Mock<IPacienteService>();
             _mockLazyPacienteService = new Mock<Lazy<IPacienteService>>();
             _mockNotificationContext = new Mock<NotificationContext>();
+            _mockConfiguration = new Mock<IConfiguration>();
         }  
 
         [Fact]
@@ -34,7 +37,7 @@ namespace ClinicaOnline.Application.Tests.Services
         {
             var medicoService = new MedicoService(
                 _mockMedicoRepository.Object, _mockLazyPacienteService.Object, 
-                _mockNotificationContext.Object
+                _mockNotificationContext.Object, _mockConfiguration.Object
             );
             var medicoList = await medicoService.GetAll();
 
@@ -46,7 +49,7 @@ namespace ClinicaOnline.Application.Tests.Services
         {
             var medicoService = new MedicoService(
                 _mockMedicoRepository.Object, _mockLazyPacienteService.Object, 
-                _mockNotificationContext.Object
+                _mockNotificationContext.Object, _mockConfiguration.Object
             );
             var medico = new Medico(){
                 Id = Guid.NewGuid()
@@ -69,7 +72,7 @@ namespace ClinicaOnline.Application.Tests.Services
         {
             var medicoService = new MedicoService(
                 _mockMedicoRepository.Object, _mockLazyPacienteService.Object, 
-                _mockNotificationContext.Object
+                _mockNotificationContext.Object, _mockConfiguration.Object
             );
             var mapperMock = new Mock<IMapper>();
             mapperMock.Setup(m => m.Map<MedicoRequest, Medico>(It.IsAny<MedicoRequest>()))
@@ -86,7 +89,7 @@ namespace ClinicaOnline.Application.Tests.Services
         {
             var medicoService = new MedicoService(
                 _mockMedicoRepository.Object, _mockLazyPacienteService.Object, 
-                _mockNotificationContext.Object
+                _mockNotificationContext.Object, _mockConfiguration.Object
             );
             var medico = new Medico(){
                 Id = Guid.NewGuid(),
@@ -121,7 +124,7 @@ namespace ClinicaOnline.Application.Tests.Services
             _mockMedicoRepository.Setup(x => x.Add(It.IsAny<Medico>())).Returns(Task.FromResult(new Medico()));
             var medicoService = new MedicoService(
                 _mockMedicoRepository.Object, _mockLazyPacienteService.Object, 
-                _mockNotificationContext.Object
+                _mockNotificationContext.Object, _mockConfiguration.Object
             );
 
             await medicoService.Add(new MedicoRequest());
@@ -140,7 +143,7 @@ namespace ClinicaOnline.Application.Tests.Services
             _mockMedicoRepository.Setup(x => x.GetByCrmAndUfCrm(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new Medico()));
             var medicoService = new MedicoService(
                 _mockMedicoRepository.Object, _mockLazyPacienteService.Object, 
-                _mockNotificationContext.Object
+                _mockNotificationContext.Object, _mockConfiguration.Object
             );
 
             await medicoService.Add(new MedicoRequest());
@@ -159,7 +162,7 @@ namespace ClinicaOnline.Application.Tests.Services
             var lazyPacienteService = new Lazy<IPacienteService>(() => _mockPacienteService.Object);
             var medicoService = new MedicoService(
                 _mockMedicoRepository.Object, lazyPacienteService, 
-                _mockNotificationContext.Object
+                _mockNotificationContext.Object, _mockConfiguration.Object
             );
 
             await medicoService.Delete(It.IsAny<Guid>());
@@ -178,7 +181,7 @@ namespace ClinicaOnline.Application.Tests.Services
             var lazyPacienteService = new Lazy<IPacienteService>(() => _mockPacienteService.Object);
             var medicoService = new MedicoService(
                 _mockMedicoRepository.Object, lazyPacienteService, 
-                _mockNotificationContext.Object
+                _mockNotificationContext.Object, _mockConfiguration.Object
             );
 
             await medicoService.Delete(It.IsAny<Guid>());
@@ -196,7 +199,7 @@ namespace ClinicaOnline.Application.Tests.Services
             var lazyPacienteService = new Lazy<IPacienteService>(() => _mockPacienteService.Object);
             var medicoService = new MedicoService(
                 _mockMedicoRepository.Object, lazyPacienteService, 
-                _mockNotificationContext.Object
+                _mockNotificationContext.Object, _mockConfiguration.Object
             );
 
             await medicoService.Delete(It.IsAny<Guid>());
