@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ClinicaOnline.Core.Entities;
-using ClinicaOnline.Core.Repositories.Base;
+using ClinicaOnline.Domain.Entities;
+using ClinicaOnline.Domain.Repositories.Base;
 
-namespace ClinicaOnline.Core.Repositories
+namespace ClinicaOnline.Domain.Repositories
 {
     public interface IUsuarioRepository : IRepository<Usuario>
     {

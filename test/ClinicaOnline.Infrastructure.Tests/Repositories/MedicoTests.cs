@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Domain.Entities;
 using ClinicaOnline.Infrastructure.Data;
 using ClinicaOnline.Infrastructure.Repositories;
 using ClinicaOnline.Infrastructure.Tests.Builders;

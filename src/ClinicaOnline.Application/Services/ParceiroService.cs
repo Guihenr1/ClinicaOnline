@@ -5,9 +5,9 @@ using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Mapper;
 using ClinicaOnline.Application.Models.Request;
 using ClinicaOnline.Application.Models.Response;
-using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Domain.Entities;
 using ClinicaOnline.Core.Notification;
-using ClinicaOnline.Core.Repositories;
+using ClinicaOnline.Domain.Repositories;
 
 namespace ClinicaOnline.Application.Services
 {

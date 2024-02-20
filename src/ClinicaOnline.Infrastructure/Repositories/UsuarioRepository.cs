@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ClinicaOnline.Core.Entities;
-using ClinicaOnline.Core.Repositories;
+using ClinicaOnline.Domain.Entities;
+using ClinicaOnline.Domain.Repositories;
 using ClinicaOnline.Infrastructure.Data;
 using ClinicaOnline.Infrastructure.Repositories.Base;
 using Microsoft.EntityFrameworkCore;

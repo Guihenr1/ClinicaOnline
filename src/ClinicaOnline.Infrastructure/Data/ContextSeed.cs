@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using ClinicaOnline.Core.Configuration;
-using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Domain.Entities;
 using ClinicaOnline.Core.Utils;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +27,7 @@ namespace ClinicaOnline.Infrastructure.Data
             return new Usuario()
             {
                 Id = Guid.NewGuid(),
-                Email = "contato@builtcode.com.br",
+                Email = "contato@builtcode.com",
                 Nome = "admin",
                 Senha = Security.GenerateHash("123456", Settings.Salt),
                 Eperfil = 0

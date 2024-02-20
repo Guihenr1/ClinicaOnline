@@ -18,7 +18,7 @@ docker-compose up -d
 
 ### Default user
 
-- User: contato<span>@</span>builtcode.com.br Password: 123456
+- User: contato<span>@</span>builtcode.com Password: 123456
 
 ### Logs
 

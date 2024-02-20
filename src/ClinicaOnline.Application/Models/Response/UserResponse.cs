@@ -1,6 +1,6 @@
 using System;
 using ClinicaOnline.Application.Models.Response.Base;
-using ClinicaOnline.Core.Enums;
+using ClinicaOnline.Domain.Enums;
 
 namespace ClinicaOnline.Application.Models.Response
 {

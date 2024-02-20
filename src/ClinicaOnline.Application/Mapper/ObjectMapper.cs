@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using AutoMapper;
 using ClinicaOnline.Application.Models.Request;
 using ClinicaOnline.Application.Models.Response;
-using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Domain.Entities;
 
 namespace ClinicaOnline.Application.Mapper
 {

@@ -1,6 +1,6 @@
 using System;
 
-namespace ClinicaOnline.Core.Entities.Base
+namespace ClinicaOnline.Domain.Entities.Base
 {
     public abstract class EntityBase
     {

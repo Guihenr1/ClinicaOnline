@@ -1,5 +1,5 @@
 using System.Linq;
-using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

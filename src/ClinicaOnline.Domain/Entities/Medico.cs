@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using ClinicaOnline.Core.Entities.Base;
+using ClinicaOnline.Domain.Entities.Base;
 
-namespace ClinicaOnline.Core.Entities
+namespace ClinicaOnline.Domain.Entities
 {
     public class Medico : EntityBase
     {

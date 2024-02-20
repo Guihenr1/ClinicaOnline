@@ -21,7 +21,7 @@ namespace ClinicaOnline.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("ClinicaOnline.Core.Entities.Medico", b =>
+            modelBuilder.Entity("ClinicaOnline.Domain.Entities.Medico", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +55,7 @@ namespace ClinicaOnline.Infrastructure.Migrations
                     b.ToTable("Medicos");
                 });
 
-            modelBuilder.Entity("ClinicaOnline.Core.Entities.Paciente", b =>
+            modelBuilder.Entity("ClinicaOnline.Domain.Entities.Paciente", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,7 +87,7 @@ namespace ClinicaOnline.Infrastructure.Migrations
                     b.ToTable("Pacientes");
                 });
 
-            modelBuilder.Entity("ClinicaOnline.Core.Entities.Parceiro", b =>
+            modelBuilder.Entity("ClinicaOnline.Domain.Entities.Parceiro", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,7 +108,7 @@ namespace ClinicaOnline.Infrastructure.Migrations
                     b.ToTable("Parceiros");
                 });
 
-            modelBuilder.Entity("ClinicaOnline.Core.Entities.Usuario", b =>
+            modelBuilder.Entity("ClinicaOnline.Domain.Entities.Usuario", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -140,9 +140,9 @@ namespace ClinicaOnline.Infrastructure.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("ClinicaOnline.Core.Entities.Paciente", b =>
+            modelBuilder.Entity("ClinicaOnline.Domain.Entities.Paciente", b =>
                 {
-                    b.HasOne("ClinicaOnline.Core.Entities.Medico", "Medico")
+                    b.HasOne("ClinicaOnline.Domain.Entities.Medico", "Medico")
                         .WithMany("Pacientes")
                         .HasForeignKey("MedicoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -151,7 +151,7 @@ namespace ClinicaOnline.Infrastructure.Migrations
                     b.Navigation("Medico");
                 });
 
-            modelBuilder.Entity("ClinicaOnline.Core.Entities.Medico", b =>
+            modelBuilder.Entity("ClinicaOnline.Domain.Entities.Medico", b =>
                 {
                     b.Navigation("Pacientes");
                 });

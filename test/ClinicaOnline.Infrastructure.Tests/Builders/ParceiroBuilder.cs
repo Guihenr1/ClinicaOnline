@@ -1,5 +1,5 @@
 using System;
-using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Domain.Entities;
 
 namespace ClinicaOnline.Infrastructure.Tests.Builders
 {

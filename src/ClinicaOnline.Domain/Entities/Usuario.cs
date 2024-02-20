@@ -1,7 +1,7 @@
-using ClinicaOnline.Core.Entities.Base;
-using ClinicaOnline.Core.Enums;
+using ClinicaOnline.Domain.Entities.Base;
+using ClinicaOnline.Domain.Enums;
 
-namespace ClinicaOnline.Core.Entities
+namespace ClinicaOnline.Domain.Entities
 {
     public class Usuario : EntityBase
     {
@@ -13,6 +13,6 @@ namespace ClinicaOnline.Core.Entities
 
         public Perfil Eperfil { get; set; }
 
-        public string ImagePath { get; set; }
+        public string? ImagePath { get; set; }
     }
 }

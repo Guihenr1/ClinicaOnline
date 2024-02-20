@@ -1,7 +1,7 @@
 using System;
-using ClinicaOnline.Core.Entities.Base;
+using ClinicaOnline.Domain.Entities.Base;
 
-namespace ClinicaOnline.Core.Entities
+namespace ClinicaOnline.Domain.Entities
 {
     public class Parceiro : EntityBase
     {

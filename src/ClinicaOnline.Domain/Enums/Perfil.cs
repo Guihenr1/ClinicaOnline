@@ -1,4 +1,4 @@
-namespace ClinicaOnline.Core.Enums
+namespace ClinicaOnline.Domain.Enums
 {
     public enum Perfil
     {

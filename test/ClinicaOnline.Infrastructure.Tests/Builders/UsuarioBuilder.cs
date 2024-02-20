@@ -1,6 +1,6 @@
 using System;
-using ClinicaOnline.Core.Entities;
-using ClinicaOnline.Core.Enums;
+using ClinicaOnline.Domain.Entities;
+using ClinicaOnline.Domain.Enums;
 
 namespace ClinicaOnline.Infrastructure.Tests.Builders
 {

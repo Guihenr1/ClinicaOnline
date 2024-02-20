@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ClinicaOnline.Application.Interfaces;
 using ClinicaOnline.Application.Models.Request;
 using ClinicaOnline.Application.Models.Response;
-using ClinicaOnline.Core.Entities;
+using ClinicaOnline.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
