@@ -39,8 +39,9 @@ namespace ClinicaOnline.Application.Services
             }
 
             mapped.Senha = Security.GenerateHash(user.Senha, Settings.Salt);
-            mapped.ImagePath = ImageUtils.UploadImage(_configuration["ConnectionStrings:BlobStorage"],
-                                                        user.Foto, _configuration["BlobStorage:Container"]);
+
+            if (!string.IsNullOrEmpty(user.Foto))
+                mapped.ImagePath = ImageUtils.UploadImage(_configuration["ConnectionStrings:BlobStorage"], user.Foto, _configuration["BlobStorage:Container"]);
 
             var userAdd = await _userRepository.Add(mapped);
             return ObjectMapper.Mapper.Map<UserResponse>(userAdd);
