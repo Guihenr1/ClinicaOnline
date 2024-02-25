@@ -9,7 +9,7 @@ namespace ClinicaOnline.Web.Configuration
 {
     public static class LoggingConfig
     {
-        public static void ConfigureLogging()
+        public static void ConfigureLogging(IConfiguration _configuration)
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var configuration = new ConfigurationBuilder()
@@ -23,15 +23,15 @@ namespace ClinicaOnline.Web.Configuration
                 .Enrich.FromLogContext()
                 .WriteTo.Debug()
                 .WriteTo.Console()
-                .WriteTo.Elasticsearch(ConfigureElasticSink(configuration, environment))
+                .WriteTo.Elasticsearch(ConfigureElasticSink(configuration, environment, _configuration))
                 .Enrich.WithProperty("Environment", environment)
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
         }
 
-        static ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment)
+        static ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment, IConfiguration _configuration)
         {
-            return new ElasticsearchSinkOptions(new Uri(configuration["Elasticsearch:Uri"]))
+            return new ElasticsearchSinkOptions(new Uri(_configuration["ElasticsearchUri"]))
             {
                 AutoRegisterTemplate = true,
                 IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"

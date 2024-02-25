@@ -7,11 +7,11 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-LoggingConfig.ConfigureLogging();
 builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
 builder.Services.AddKeyVault(builder.Configuration);
+LoggingConfig.ConfigureLogging(builder.Configuration);
 DependencyInjectionConfig.ConfigureAspnetRunServices(builder.Services, builder.Configuration);
 Configuration.ConfigureJwt(builder.Services, builder.Configuration);
 SwaggerConfig.ConfigureSwagger(builder.Services);
