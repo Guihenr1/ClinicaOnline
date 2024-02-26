@@ -49,8 +49,9 @@ namespace ClinicaOnline.Web.Configuration
         }
 
         private static void ConfigureDatabases(IServiceCollection services, IConfiguration configuration)
-        {            
-            services.AddDbContext<Context>(options => options.UseNpgsql(configuration["ConnectionString"]));
+        {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            services.AddDbContext<Context>(options => options.UseNpgsql(configuration[$"ConnectionString{environment}"]));
         }
     }
 }

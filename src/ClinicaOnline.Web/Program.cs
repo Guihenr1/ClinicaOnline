@@ -10,9 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
-builder.Services.AddKeyVault(builder.Configuration);
-LoggingConfig.ConfigureLogging(builder.Configuration);
+builder.Services.AddKeyVault(builder);
 DependencyInjectionConfig.ConfigureAspnetRunServices(builder.Services, builder.Configuration);
+LoggingConfig.ConfigureLogging(builder.Configuration);
 Configuration.ConfigureJwt(builder.Services, builder.Configuration);
 SwaggerConfig.ConfigureSwagger(builder.Services);
 

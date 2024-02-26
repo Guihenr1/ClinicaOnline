@@ -31,7 +31,7 @@ namespace ClinicaOnline.Web.Configuration
 
         static ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment, IConfiguration _configuration)
         {
-            return new ElasticsearchSinkOptions(new Uri(_configuration["ElasticsearchUri"]))
+            return new ElasticsearchSinkOptions(new Uri(_configuration[$"ElasticsearchUri{environment}"]))
             {
                 AutoRegisterTemplate = true,
                 IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
