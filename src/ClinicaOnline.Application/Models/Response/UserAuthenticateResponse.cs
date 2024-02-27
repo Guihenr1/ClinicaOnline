@@ -20,7 +20,5 @@ namespace ClinicaOnline.Application.Models.Response
         public string name { get; set; }
 
         public string perfil { get; set; }
-
-        public string foto { get; set; }
     }
 }

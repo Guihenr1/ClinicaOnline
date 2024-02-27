@@ -40,9 +40,6 @@ namespace ClinicaOnline.Application.Services
 
             mapped.Senha = Security.GenerateHash(user.Senha, Settings.Salt);
 
-            if (!string.IsNullOrEmpty(user.Foto))
-                mapped.ImagePath = ImageUtils.UploadImage(_configuration["BlobStorageConnection"], user.Foto, _configuration["BlobStorageContainer"]);
-
             var userAdd = await _userRepository.Add(mapped);
             return ObjectMapper.Mapper.Map<UserResponse>(userAdd);
         }
@@ -72,8 +69,7 @@ namespace ClinicaOnline.Application.Services
                 {
                     email = user.Email,
                     name = user.Nome,
-                    perfil = user.Eperfil.ToString(),
-                    foto = user.ImagePath
+                    perfil = user.Eperfil.ToString()
                 }
             };
         }

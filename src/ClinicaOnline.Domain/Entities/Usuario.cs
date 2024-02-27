@@ -12,7 +12,5 @@ namespace ClinicaOnline.Domain.Entities
         public string Senha { get; set; }
 
         public Perfil Eperfil { get; set; }
-
-        public string? ImagePath { get; set; }
     }
 }

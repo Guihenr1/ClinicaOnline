@@ -22,8 +22,5 @@ namespace ClinicaOnline.Application.Models.Request
         [Required(ErrorMessage = "Campo obrigatório")]
         [EnumDataType(typeof(Perfil), ErrorMessage = "Perfil inválido")]
         public Perfil Eperfil { get; set; }
-
-        [Required(ErrorMessage = "Campo obrigatório")]
-        public string Foto { get; set; }
     }
 }

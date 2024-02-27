@@ -34,16 +34,14 @@ namespace ClinicaOnline.Application.Tests.Services
             var userRequest = new UserRequest()
             {
                 Email = "contato@builtcode.com",
-                Senha = "123456",  
-                Foto = ""
+                Senha = "123456"
             };
             _mockUsuarioRepository.Setup(x => x.CheckEmailExists(It.IsAny<string>())).ReturnsAsync(false);
             _mockUsuarioRepository.Setup(x => x.Add(It.IsAny<Usuario>())).ReturnsAsync(new Usuario()
             {
                 Id = Guid.NewGuid(),
                 Email = "contato@builtcode.com",
-                Senha = "123456",
-                ImagePath = ""
+                Senha = "123456"
             });
 
             // Act
@@ -61,8 +59,7 @@ namespace ClinicaOnline.Application.Tests.Services
             var userRequest = new UserRequest()
             {
                 Email = "contato@builtcode.com",
-                Senha = "123456",
-                Foto = ""
+                Senha = "123456"
             };
             _mockUsuarioRepository.Setup(x => x.CheckEmailExists(It.IsAny<string>())).ReturnsAsync(true);
 
@@ -81,8 +78,7 @@ namespace ClinicaOnline.Application.Tests.Services
             var userRequest = new UserRequest()
             {
                 Email = "invalidemail",
-                Senha = "123456",
-                Foto = ""
+                Senha = "123456"
             };
 
             // Act
